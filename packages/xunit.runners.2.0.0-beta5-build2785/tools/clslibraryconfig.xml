@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LibraryConfiguration>
+  <Contexts>
+    <Context>
+      <Appname>default</Appname>
+      <Appcontext>default</Appcontext>
+      <LoggingServiceUrl>https://cls-prf.lacerte.intuit.com//Supportability/MilestoneLoggerServlet</LoggingServiceUrl>
+    </Context>
+    <Context>
+      <Appname>LACERTE</Appname>
+      <Appcontext>support</Appcontext>
+      <LoggingServiceUrl>https://cls-prf.lacerte.intuit.com//Supportability/MilestoneLoggerServlet</LoggingServiceUrl>
+    </Context>
+  </Contexts>
+  <TokenList>jlkdfkfhdfdsifdffod8fdfdfdff</TokenList>
+</LibraryConfiguration>
