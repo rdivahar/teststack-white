@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-run id="2" testcasecount="3" result="Failed" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="7" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2016-10-12 21:10:46Z" end-time="2016-10-12 21:11:42Z" duration="56.469641">
+  <command-line><![CDATA[nunit3-console.exe  "C:\JestaPOS\visionstore\visionstore\bin\Debug\VStoreAutomation.dll" --work="C:\JestaPOS\visionstore\visionstore\bin" --result==divaresults.xml]]></command-line>
+  <test-suite type="Assembly" id="0-1004" name="VStoreAutomation.dll" fullname="C:\JestaPOS\visionstore\visionstore\bin\Debug\VStoreAutomation.dll" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2016-10-12 21:10:46Z" end-time="2016-10-12 21:11:42Z" duration="56.396724" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="7">
+    <environment framework-version="3.4.1.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\JestaPOS\visionstore\packages\NUnit.ConsoleRunner.3.5.0\tools" machine-name="WS-4086" user="sdivahar" user-domain="JESTAIS" culture="en-CA" uiculture="en-US" os-architecture="x64" />
+    <settings>
+      <setting name="DisposeRunners" value="True" />
+      <setting name="WorkDirectory" value="C:\JestaPOS\visionstore\visionstore\bin" />
+      <setting name="ImageRuntimeVersion" value="4.0.30319" />
+      <setting name="ImageTargetFrameworkName" value=".NETFramework,Version=v4.5.2" />
+      <setting name="ImageRequiresX86" value="False" />
+      <setting name="ImageRequiresDefaultAppDomainAssemblyResolver" value="False" />
+      <setting name="NumberOfTestWorkers" value="8" />
+    </settings>
+    <properties>
+      <property name="_PID" value="8580" />
+      <property name="_APPDOMAIN" value="test-domain-" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="TestSuite" id="0-1005" name="Jesta" fullname="Jesta" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2016-10-12 21:10:46Z" end-time="2016-10-12 21:11:42Z" duration="56.366313" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="7">
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="0-1006" name="Automation" fullname="Jesta.Automation" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2016-10-12 21:10:46Z" end-time="2016-10-12 21:11:42Z" duration="56.356128" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="7">
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="0-1007" name="VisionStore" fullname="Jesta.Automation.VisionStore" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2016-10-12 21:10:46Z" end-time="2016-10-12 21:11:42Z" duration="56.354145" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="7">
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="0-1008" name="Tests" fullname="Jesta.Automation.VisionStore.Tests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2016-10-12 21:10:46Z" end-time="2016-10-12 21:11:42Z" duration="56.352568" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="7">
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="0-1000" name="SmokeTests" fullname="Jesta.Automation.VisionStore.Tests.SmokeTests" classname="Jesta.Automation.VisionStore.Tests.SmokeTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2016-10-12 21:10:46Z" end-time="2016-10-12 21:11:42Z" duration="56.349347" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="7">
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <output><![CDATA[[Info - 5:10:58 PM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableVerticalScrollBar=Vertical Scroll Bar for White/UIItemId
+[Info - 5:10:58 PM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableHorizontalScrollBar=Horizontal Scroll Bar for White/UIItemId
+[Info - 5:10:58 PM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableColumn=Row  for White/UIItemId
+[Info - 5:10:58 PM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableTopLeftHeaderCell=Top Left Header Cell for White/UIItemId
+[Info - 5:10:58 PM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableCellNullValue=(null) for White/UIItemId
+[Info - 5:10:58 PM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableHeader=Top Row for White/UIItemId
+[Info - 5:10:58 PM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using HorizontalScrollBar=Horizontal ScrollBar for White/UIItemId
+[Info - 5:10:58 PM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using VerticalScrollBar=Vertical ScrollBar for White/UIItemId
+[Info - 5:10:58 PM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableCellPrefix= Row  for White/UIItemId
+]]></output>
+              <test-case id="0-1001" name="TestRecoverTransactions" fullname="Jesta.Automation.VisionStore.Tests.SmokeTests.TestRecoverTransactions" methodname="TestRecoverTransactions" classname="Jesta.Automation.VisionStore.Tests.SmokeTests" runstate="Runnable" seed="312764294" result="Passed" start-time="2016-10-12 21:10:58Z" end-time="2016-10-12 21:11:22Z" duration="24.333494" asserts="3">
+                <properties>
+                  <property name="Order" value="1" />
+                </properties>
+              </test-case>
+              <test-case id="0-1002" name="TestTransactionWithCash" fullname="Jesta.Automation.VisionStore.Tests.SmokeTests.TestTransactionWithCash" methodname="TestTransactionWithCash" classname="Jesta.Automation.VisionStore.Tests.SmokeTests" runstate="Runnable" seed="1804186820" result="Failed" start-time="2016-10-12 21:11:22Z" end-time="2016-10-12 21:11:26Z" duration="3.574075" asserts="1">
+                <properties>
+                  <property name="Order" value="2" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at Jesta.VStore.Automation.Framework.CommonUtility.SellOrReturn() in C:\JestaPOS\visionstore\visionstore\Framework\CommonUtility.cs:line 248
+at Jesta.Automation.VisionStore.Tests.SmokeTests.TestTransactionWithCash() in C:\JestaPOS\visionstore\visionstore\Tests\SmokeTests.cs:line 54
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="0-1003" name="TestingSearchClient" fullname="Jesta.Automation.VisionStore.Tests.SmokeTests.TestingSearchClient" methodname="TestingSearchClient" classname="Jesta.Automation.VisionStore.Tests.SmokeTests" runstate="Runnable" seed="1874848100" result="Passed" start-time="2016-10-12 21:11:26Z" end-time="2016-10-12 21:11:42Z" duration="15.978335" asserts="3" />
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
