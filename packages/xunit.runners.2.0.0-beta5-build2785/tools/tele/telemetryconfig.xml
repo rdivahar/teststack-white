@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Telemetry>
-  <ThrottleConfig>
-    <AllowedBuckets>100</AllowedBuckets>
-    <TotalBuckets>100</TotalBuckets>
-  </ThrottleConfig>
-</Telemetry>
