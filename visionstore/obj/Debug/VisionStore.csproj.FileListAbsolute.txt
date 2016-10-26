@@ -1,0 +1,12 @@
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\bin\Debug\visionstore.dll
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\bin\Debug\visionstore.pdb
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\bin\Debug\Castle.Core.dll
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\bin\Debug\nunit.framework.dll
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\bin\Debug\TestStack.White.dll
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\bin\Debug\Castle.Core.xml
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\bin\Debug\nunit.framework.xml
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\bin\Debug\TestStack.White.pdb
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\bin\Debug\TestStack.White.xml
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\obj\Debug\VisionStore.csprojResolveAssemblyReference.cache
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\obj\Debug\visionstore.dll
+C:\Users\sdivahar\JestaPOS\visionstore\visionstore\obj\Debug\visionstore.pdb
