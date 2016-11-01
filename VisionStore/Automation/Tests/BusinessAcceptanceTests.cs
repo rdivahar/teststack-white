@@ -23,9 +23,7 @@ namespace Jesta.Automation.VisionStore.Tests
     [TestFixture]
     public class BusinessAcceptanceTests : CommonUtility
     {
-        Transactions Trans = new Transactions();
-        Employee Emp = new Employee();
-        Customer Cust = new Customer();
+        
       
         [OneTimeSetUp]
         public void LaunchApp()
@@ -59,6 +57,9 @@ namespace Jesta.Automation.VisionStore.Tests
         //[Test, Order(1)]
         public void Test_RecoverTransactions()
         {
+            Transactions Trans = new Transactions();
+            Employee Emp = new Employee();
+
             Trans.SelectRecoverTransactions();
             Emp.AuthenticateEmployee(CommonData.EMP_ID, CommonData.EMP_PWD);
 
@@ -69,6 +70,10 @@ namespace Jesta.Automation.VisionStore.Tests
         [Test, Order(2)]
         public void Test_Transaction_WithCash_NoCustomer()
         {
+            Transactions Trans = new Transactions();
+            Employee Emp = new Employee();
+            Customer Cust = new Customer();
+
             Trans.SellOrReturn();
             Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
 
@@ -83,6 +88,10 @@ namespace Jesta.Automation.VisionStore.Tests
         //[Test, Order(3)]
         public void Test_Transaction_WithCash_WithCustomer()
         {
+            Transactions Trans = new Transactions();
+            Employee Emp = new Employee();
+            Customer Cust = new Customer();
+
             Trans.SellOrReturn();
 
             Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
@@ -97,6 +106,10 @@ namespace Jesta.Automation.VisionStore.Tests
         //[Test, Order(4)]
         public void Test_Transaction_Suspend_NoCustomer()
         {
+            Transactions Trans = new Transactions();
+            Employee Emp = new Employee();
+            Customer Cust = new Customer();
+
             Trans.SellOrReturn();
             Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
 
@@ -128,6 +141,10 @@ namespace Jesta.Automation.VisionStore.Tests
         //[Test, Order(5)]
         public void Test_Transaction_Suspend_WithCustomer()
         {
+            Transactions Trans = new Transactions();
+            Employee Emp = new Employee();
+            Customer Cust = new Customer();
+
             Trans.SellOrReturn();
             Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
 
@@ -151,6 +168,10 @@ namespace Jesta.Automation.VisionStore.Tests
         //[Test, Order(6)]
         public void Test_Transaction_Hold_WithCustomer()
         {
+            Transactions Trans = new Transactions();
+            Employee Emp = new Employee();
+            Customer Cust = new Customer();
+
             Trans.SellOrReturn();
             Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
 
