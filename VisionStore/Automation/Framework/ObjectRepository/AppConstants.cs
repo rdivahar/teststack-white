@@ -12,14 +12,17 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
         public static string SALES_ADVISOR_LABEL = "Who is the sales advisor?";
         public static string SCAN_BARCODE_LABEL = "Scan a barcode ...";
         public static string PAYMENT_MODE_PROMPT = "How shall this be settled?";
+        public static string ENTER_TENDER_AMT_PROMPT = "Please enter the tender amount.";
+        public static string ENTER_CHANGE_DUE_PROMPT = "Change Due ...";
+        public static string PRINT_RECEIPT_PROMPT = "Email / Print Receipt";
         public static string PAYMENT_MODE = "Cash";
         public static string MAJOR_PROMPT = "lblMajorPrompt";
-        public static string LBL_BTM_CUSTNAME = "lblCustomerName";
+        public static string LBL_BTM_CUSTNAME = "lblCustomerName"; 
         public static string LBL_TAG_CUSTINFO = "lblCustInfoName";
         public static string LBL_TRANS_NUM = "lblTrans";
 
         //CUSTOMER WINDOW 
-        public static string WIN_CUSTOMER_FORM = "FrmCustomer2";
+        public static string WIN_CUSTOMER_FORM = "FrmCustomer2"; // Has to changed to FrmCustomer3 
         public static string WIN_CUSTOMER_ADD = "FrmEditCustomer";
         public static string TXT_SEARCH_CLASSNAME = "WindowsForms10.RichEdit20W.app.0.1a8c1fa_r14_ad1";
         public static string LABEL_CUSTOMER_ID = "lblName";

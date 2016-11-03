@@ -11,6 +11,7 @@ using TestStack.White.UIItems.WindowItems;
 using TestStack.White.WindowsAPI;
 using Jesta.VStore.Automation.Framework.Configuration;
 using TestStack.White.UIItems.TabItems;
+using Jesta.VStore.Automation.Framework.ObjectRepository;
 
 namespace Jesta.VStore.Automation.Framework.CommonLibrary
 {
@@ -55,14 +56,16 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
 
         public bool VerifyAppState(string sExpectedAppState)
         {
-           string sDefaultAutomationID = "lblState";
+           string sDefaultAutomationID = StateConstants.APPSTATE_LABEL_ID;
+           Thread.Sleep(CommonData.iWinLoadingWait);
+           wVStoreMainWindow.WaitWhileBusy();
            Label AppState = GetLabel(wVStoreMainWindow, sDefaultAutomationID);
            return (AppState.NameMatches(sExpectedAppState));    
         }
 
         public void PressEnter(Window wVStoreWin)
         {
-            
+      
             Thread.Sleep(CommonData.iMinWait);
             wVStoreWin.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
             Thread.Sleep(CommonData.iMinWait);
@@ -128,10 +131,10 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             wWin.WaitWhileBusy();
         }
 
+
         //public bool GetItemFromGrid(String HeaderrValue, String ExpectedItem)
         //{
 
         //}
-
     }
 }

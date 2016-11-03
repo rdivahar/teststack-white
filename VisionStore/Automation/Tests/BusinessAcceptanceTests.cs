@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.PropertyGridItems;
-using Jesta.VStore.Automation.Framework;
 using System.Diagnostics;
 using TestStack.White.UIItems.WindowItems;
 using Jesta.VStore.Automation.Framework.CommonLibrary;
@@ -23,8 +22,10 @@ namespace Jesta.Automation.VisionStore.Tests
     [TestFixture]
     public class BusinessAcceptanceTests : CommonUtility
     {
-        
-      
+        Transactions Trans = new Transactions();
+        Employee Emp = new Employee();
+        Customer Cust = new Customer();
+  
         [OneTimeSetUp]
         public void LaunchApp()
         {
@@ -40,7 +41,7 @@ namespace Jesta.Automation.VisionStore.Tests
         }
 
         [SetUp]
-        public void SetUp()
+        public void BATS_SetUp()
         {
         // if (GetAppState("[200]").Visible == false)
         //    {
@@ -49,7 +50,7 @@ namespace Jesta.Automation.VisionStore.Tests
         }
 
         [TearDown]
-        public void TearDown()
+        public void BATS_TearDown()
         {
             //Do Nothing
         }
@@ -67,20 +68,20 @@ namespace Jesta.Automation.VisionStore.Tests
             Assert.True(Trans.NoTransactionToTransaferMessage(), "No Transactions To Transfer Message Existance");
         }
 
-        [Test, Order(2)]
+        //[Test, Order(2)]
         public void Test_Transaction_WithCash_NoCustomer()
         {
-            Transactions Trans = new Transactions();
-            Employee Emp = new Employee();
-            Customer Cust = new Customer();
-
-            Trans.SellOrReturn();
+            Trans.StartTransaction();
+            LoggerUtility.WriteLog("Step: Clicked on Sell Or Return");
             Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
+            LoggerUtility.WriteLog("Step: USer AUthenticated");
 
             WaitForWinToLoad(Cust.wCustomerWin);
+            LoggerUtility.WriteLog("Step: Waiting for Cust Win to load");
             Cust.CloseCustomerWindow();
+            LoggerUtility.WriteLog("Step: Closed Cust Win");
 
-            Assert.True(Cust.VerifyNoCustomerIsSelected());
+            Assert.True(Cust.VerifyNoCustomerIsSelected(), "Failed to validate the NoCustomer");
             Emp.EnterSalesAdvisor(CommonData.SALES_ADVISOR_ID);
             Trans.ScanBarCodeAndTender(CommonData.BLUE_MINISTR_PRODCODE);
         }
@@ -88,11 +89,7 @@ namespace Jesta.Automation.VisionStore.Tests
         //[Test, Order(3)]
         public void Test_Transaction_WithCash_WithCustomer()
         {
-            Transactions Trans = new Transactions();
-            Employee Emp = new Employee();
-            Customer Cust = new Customer();
-
-            Trans.SellOrReturn();
+            Trans.StartTransaction();
 
             Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
             Cust.SetCustomer(CommonData.sCutomerName);
@@ -106,11 +103,7 @@ namespace Jesta.Automation.VisionStore.Tests
         //[Test, Order(4)]
         public void Test_Transaction_Suspend_NoCustomer()
         {
-            Transactions Trans = new Transactions();
-            Employee Emp = new Employee();
-            Customer Cust = new Customer();
-
-            Trans.SellOrReturn();
+            Trans.StartTransaction();
             Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
 
             WaitForWinToLoad(Cust.wCustomerWin);
@@ -141,11 +134,7 @@ namespace Jesta.Automation.VisionStore.Tests
         //[Test, Order(5)]
         public void Test_Transaction_Suspend_WithCustomer()
         {
-            Transactions Trans = new Transactions();
-            Employee Emp = new Employee();
-            Customer Cust = new Customer();
-
-            Trans.SellOrReturn();
+            Trans.StartTransaction();
             Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
 
             Cust.SetCustomer(CommonData.sCutomerName);
@@ -168,11 +157,7 @@ namespace Jesta.Automation.VisionStore.Tests
         //[Test, Order(6)]
         public void Test_Transaction_Hold_WithCustomer()
         {
-            Transactions Trans = new Transactions();
-            Employee Emp = new Employee();
-            Customer Cust = new Customer();
-
-            Trans.SellOrReturn();
+            Trans.StartTransaction();
             Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
 
             Cust.SetCustomer(CommonData.sCutomerName);
@@ -187,7 +172,7 @@ namespace Jesta.Automation.VisionStore.Tests
             //Verfiy OnHold Transactions from  Cust
             Cust.OpenCustomerWindow();
             Cust.SearchCustomers("Paul Summer");
-            Trans.IsTransactionOnHoldAtCustInfo(sTransactionNumber);
+            Trans.IsTransactionOnHoldAtCustForm(sTransactionNumber);
             Cust.CloseCustomerWindow();
 
             //Verify OnHold Transactions from ResumeTransactions
@@ -197,6 +182,13 @@ namespace Jesta.Automation.VisionStore.Tests
 
             //Void Transaction
             Assert.True(Trans.VoidSuspendedTransaction(sTransactionNumber), "Step: Void The Suspended Transaction");
+        }
+
+        [Test]
+        public void test_tenderAmount()
+        {
+            Thread.Sleep(2000);
+            LoggerUtility.WriteLog(GetPanel(wVStoreMainWindow, "txtSku").Text.ToString());
         }
     }
 }

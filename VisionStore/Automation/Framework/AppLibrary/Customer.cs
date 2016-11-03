@@ -26,7 +26,8 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
-        public bool OpenCustomerWindow()
+
+        public bool OpenCustomerWindow()  
         {
             Boolean bResults = false;
            try
@@ -51,11 +52,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
                 ClickOnButton(wCustomerWin, ButtonConstants.BTN_CLOSE_CUSTOMERWIN);          
                 return true;
             }
-            catch
+            catch (Exception Ex)
             {
-                LoggerUtility.WriteLog("Failure Message: Failed to Close the Customer Search Screen");
                 return bResults;
-                throw;
+                throw new AutomationException("Failed to Close the Customer Search Screen", Ex.StackTrace);
             }
         }
 
@@ -65,7 +65,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             try
             {
                 Assert.True(SearchCustomers(sCustomer));
-                Thread.Sleep(7000);
+                Thread.Sleep(5000);
                 wCustomerWin.WaitWhileBusy();
                 ClickOnButton(wCustomerWin, "fBtnSetAsCustomer");
                 Thread.Sleep(CommonData.iLoadingTime);
@@ -88,7 +88,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
                     SetTextByClassName(wCustomerWin, AppConstants.TXT_SEARCH_CLASSNAME, sCustomer);
                     ClickOnButton(GetButton(wCustomerWin, ButtonConstants.BTN_SEARCH_CUST));
                     wCustomerWin.WaitWhileBusy();
-                    Thread.Sleep(10000);
+                    Thread.Sleep(7000);
 
                     Label SearchResults = GetLabel(wCustomerWin, AppConstants.LBL_SEARCH_RESULTS);
                     if (SearchResults.Text != "Displaying 1 of 1 Customer")
@@ -129,8 +129,8 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
                     ListView lstCustomerTable = wCustomerWin.Get<ListView>(SearchCriteria.ByAutomationId("dataGrid1"));
                     lstCustomerTable.Row("First Name", "Summer").Select();
                     wCustomerWin.WaitWhileBusy();
-                }  
-                return bResults = IsCustomerSelected(sCustomer);
+                } 
+                    return bResults = IsCustomerSelected(sCustomer);
             }
             catch (Exception Ex)
             {
@@ -203,6 +203,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         public bool VerifyNoCustomerIsSelected()
         {
             Label btmCustNamelabel = GetLabel(AppConstants.LBL_BTM_CUSTNAME);
+            LoggerUtility.WriteLog(btmCustNamelabel.Text);
             if (btmCustNamelabel.Text == "")
             {
                 return true;

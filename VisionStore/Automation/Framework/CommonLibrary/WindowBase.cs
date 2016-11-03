@@ -142,13 +142,18 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             ListView listView = wWin.Get<ListView>(SearchCriteria.ByAutomationId(sAutomationID));
             return listView;
         }
+        
+        public Panel GetPanel(Window wWin, String sAutomationID)
+        {
+            Panel pane = wWin.Get<Panel>(SearchCriteria.ByAutomationId(sAutomationID));
+            return pane;
+        }
 
         public Tab GetTab(Window wWin, string sAutomationID)
         {
             Tab tabControl = wWin.Get<Tab>(SearchCriteria.ByAutomationId(sAutomationID));
             return tabControl;
         }
-
 
         //protected new ToolStrip ToolStrip(string title)
         //{

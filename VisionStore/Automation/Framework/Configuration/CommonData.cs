@@ -38,6 +38,7 @@ namespace Jesta.VStore.Automation.Framework.Configuration
         //TimeOut Wait Data
         public static int iMinWait = 1000;
         public static int iLoadingTime = 2500;
+        public static int iWinLoadingWait = 2000;
     }
 }
 

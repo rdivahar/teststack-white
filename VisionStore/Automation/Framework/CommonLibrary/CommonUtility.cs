@@ -48,12 +48,14 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             wVStoreMainWindow.WaitWhileBusy();
             Thread.Sleep(1000);
             PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
-            Thread.Sleep(CommonData.iLoadingTime);
+            Thread.Sleep(CommonData.iMinWait);
         }
 
         public bool VerifyAppStateAndLabel(string sAppStateText, string sIdentificationLabel)
         {
             Boolean bResults = false;
+
+            Thread.Sleep(CommonData.iWinLoadingWait);
             Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
             wVStoreMainWindow.WaitWhileBusy();
             Label appState = GetAppState(sAppStateText);
@@ -64,7 +66,7 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
                 return true; 
             }else
             {
-                Console.WriteLine("Failure: The Applicated failed to load the expected Appstate: " + sAppStateText);
+                Console.WriteLine("Failure: The Application failed to load the expected Appstate: " + sAppStateText);
                 return bResults;
             }
         }

@@ -36,94 +36,131 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
-        public void SellOrReturn()
+        public bool StartTransaction()
         {
-            wVStoreMainWindow.WaitWhileBusy();
-            Label appState = GetLabel(StateConstants.APPSTATE_LABEL_ID);
-
-            if (appState.NameMatches(StateConstants.STATE_200))
+            try
             {
-                try
-                {
-                    //Click On Sell/Return Button
-                    ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_SELL_RETURN);
-                    Label appState_900 = GetAppState(StateConstants.STATE_900);
-                    Assert.True(appState_900.NameMatches(StateConstants.STATE_900), "App is in different State");
-                    Console.WriteLine("Note: CustomerScreen Doesnt Appear");
-                }
-                catch (AssertionException ex)
-                {
-                    Console.WriteLine("Error: The App is not in state 900. StackTrace: " + ex.StackTrace);
-                    throw;
-                }
+                VerifyAppState(StateConstants.STATE_200);
+                ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_SELL_RETURN);
+                Console.WriteLine("Info: Starting the Transaction");
+                return VerifyAppState(StateConstants.STATE_900);
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw new AutomationException("Error: The Application failed to Start a Transaction" , ex.StackTrace);
+            }
+        }
+
+        public bool SuspendTransaction()
+        {
+            try
+            {
+                ClickOnButton(ButtonConstants.BTN_PANEL_NEXT);
+                PressSpecialKey(KeyboardInput.SpecialKeys.F1);
+                wVStoreMainWindow.WaitWhileBusy();
+                return VerifyAppState(StateConstants.STATE_200);
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw new AutomationException("Error: The Application failed to select Suspend Transaction", ex.StackTrace);
+            }
+        }
+
+        public bool HoldTransaction()
+        {
+            try
+            {
+                VerifyAppState(StateConstants.STATE_1000);
+                PressSpecialKey(KeyboardInput.SpecialKeys.F11);
+                ClickOnButton(wHoldExpiryDateWin, "btnSelectPromiseDate");
+                wVStoreMainWindow.WaitWhileBusy();
+                return VerifyAppState(StateConstants.STATE_200);
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw new AutomationException("Error: The Application failed to select Hold Transaction", ex.StackTrace);
+            }
+
+        }
+
+        public bool SelectRecoverTransactions()
+        {
+            try
+            {
+                wVStoreMainWindow.WaitWhileBusy();
+                VerifyAppState(StateConstants.STATE_200);
+                ClickOnButton(ButtonConstants.BTN_RECOVER_TRANSACTIONS);
+                return VerifyAppState(StateConstants.STATE_9010);
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw new AutomationException("Error: The Application Failed to select Recover Transactions", ex.StackTrace);
+            }
+        }
+
+        public bool VoidTransaction()
+        {
+            try
+            {
+                ClickOnButton(ButtonConstants.BTN_PANEL_NEXT);
+                PressSpecialKey(KeyboardInput.SpecialKeys.F3);
+                wVStoreMainWindow.WaitWhileBusy();
+                return VerifyAppState(StateConstants.STATE_200);
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw new AutomationException("Error: The Application Failed to Void Transaction", ex.StackTrace);
+            }
+        }
+
+        public bool ResumeTransaction()
+        {
+            Employee Emp = new Employee();
+
+            try
+            {
+                ClickOnButton(ButtonConstants.BTN_RESUME);
+                Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
+                Thread.Sleep(CommonData.iWinLoadingWait);
+                return wResumeTransactionWin.Enabled;
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw new AutomationException("Error: The Application Failed to Resume Transactions", ex.StackTrace);
+            }
+        }
+
+        public void ScanBarCode(string sBarCode) 
+        {
+            try
+            {
+                VerifyAppStateAndLabel(StateConstants.STATE_1000, AppConstants.SCAN_BARCODE_LABEL);
+                EnterCredential(sBarCode);
+                Assert.True(VerifyAppState(StateConstants.STATE_1000), "The Application is not in " + StateConstants.STATE_1000);
+                Console.WriteLine("Info: The Application is in State: " + StateConstants.STATE_1000);
+             }
+            catch (Exception ex)
+            {
+                throw new AutomationException("Error: The App Failed to Scan the Barcode", ex.StackTrace);
             }
         }
 
         public void ScanBarCodeAndTender(string sBarCode)
         {
-            //Check the Appstate is [1000]
-            Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
-            Thread.Sleep(2000);
-            Label appState_1000 = GetAppState(StateConstants.STATE_1000);
-            Assert.True(appState_1000.Enabled, "Appstate is Enabled");
-
-            if (appState_1000.NameMatches(StateConstants.STATE_1000) && majorPromptLabel.NameMatches(AppConstants.SCAN_BARCODE_LABEL))
+            try
             {
-                try
-                {
-                    this.EnterCredential(sBarCode);
-                    Assert.True(appState_1000.Enabled);
-                    this.TenderTransactionWithCash();
-                }
-                catch (AssertionException ex)
-                {
-                    LoggerUtility.WriteLog("Failure Message: " + ex.StackTrace);
-                }
+                ScanBarCode(sBarCode);
+                TenderTransactionWithCash();
             }
-        }
-
-        public void ScanBarCode(string sBarCode)
-        {
-            //Check the Appstate is [1000]
-            Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
-            Thread.Sleep(2000);
-            Label appState_1000 = GetAppState(StateConstants.STATE_1000);
-            Assert.True(appState_1000.Enabled, "Appstate is Enabled");
-
-            if (appState_1000.NameMatches(StateConstants.STATE_1000) && majorPromptLabel.NameMatches(AppConstants.SCAN_BARCODE_LABEL))
+            catch (Exception ex)
             {
-                try
-                {
-                    this.EnterCredential(sBarCode);
-                    Assert.True(appState_1000.Enabled);
-                }
-                catch (AssertionException ex)
-                {
-                    LoggerUtility.WriteLog("Failure Message: " + ex.StackTrace);
-                }
-            }
-        }
-
-        public void SelectRecoverTransactions()
-        {
-            ///<summary>
-            ///Description: This Method is to select the Recover Transactions Functionality
-            ///Parameters: N/A
-            ///Verification: On Selection, the state should change from [200] to [900]
-            ///</summary>
-
-            WaitForWinToLoad(wVStoreMainWindow);
-            Label appState_200 = GetAppState(StateConstants.STATE_200);
-
-            if (appState_200.NameMatches(StateConstants.STATE_200))
-            {
-                ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_RECOVER_TRANSACTIONS);
-                wVStoreMainWindow.WaitWhileBusy();
-                Assert.True(GetAppState(StateConstants.STATE_9010).Enabled);
-            }
-            else
-            {
-                Console.WriteLine("Error: The Application is Not in State 200");
+                throw new AutomationException("Error: The App Failed to ScanBarcode and Tender", ex.StackTrace);
             }
         }
 
@@ -142,9 +179,122 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             return bNoTransMessage;
         }
 
+        public void TenderTransaction(string sTenderType, string sTenderAmount = null)
+        {
+            try
+            {
+                ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_TENDER);
+                wVStoreMainWindow.WaitWhileBusy();
+                Thread.Sleep(CommonData.iMinWait);
+
+                switch (sTenderType)
+                {
+                    case "Cash":
+                        PayWithCash();
+                        break;
+                    case "Credit Card":
+                        //PayWithCard()do something
+                        break;
+                    case "Debit Card":
+                        //do something
+                        break;
+                    case "Gift Card":
+                        //do something
+                        break;
+                    case "US Cash":
+                        //do something
+                        break;
+                    case "Cheque":
+                        //do something
+                        break;
+                    case "Gift Certificate":
+                        //do something
+                        break;
+                    case "Mall Coupon":
+                        //do something
+                        break;
+                    case "Payroll Deduction":
+                        //do something
+                        break;
+                    case "Wireless Payment":
+                        //do something
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new AutomationException("Error: The App Failed Tender with the Payment mode of "+ sTenderType, ex.StackTrace);
+            }
+        }
+
+        public bool PayWithCash(string sPaymentAmount = null)
+        {
+            string sChangeDueValue;
+
+            try
+            {
+                VerifyAppStateAndLabel(StateConstants.STATE_7000, AppConstants.PAYMENT_MODE_PROMPT);
+                PressSpecialKey(KeyboardInput.SpecialKeys.F3);
+                VerifyAppStateAndLabel(StateConstants.STATE_7040, AppConstants.ENTER_TENDER_AMT_PROMPT);
+
+                if (sPaymentAmount == null)
+                {
+                    PressEnter(wVStoreMainWindow);
+                    VerifyAppStateAndLabel(StateConstants.STATE_9900, AppConstants.ENTER_CHANGE_DUE_PROMPT);
+                    sChangeDueValue = GetPanel(wVStoreMainWindow, "txtSku").Text.ToString();
+                    Assert.True(sChangeDueValue == "0.00", "Change Due Value is not matching with the Product Cost");
+                }
+                else
+                {
+                    EnterCredential(sPaymentAmount);
+                    VerifyAppStateAndLabel(StateConstants.STATE_9900, AppConstants.ENTER_CHANGE_DUE_PROMPT);
+                    sChangeDueValue = GetPanel(wVStoreMainWindow, "txtSku").Text.ToString();
+                    Assert.True(sChangeDueValue != "0.00", "Change Due Value is not matching with the Entered Tender Amount");
+                }
+
+                PressSpecialKey(KeyboardInput.SpecialKeys.F1);
+                return VerifyAppState(StateConstants.STATE_9900);
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw new AutomationException("Error: The App Failed to make payment with Cash", ex.StackTrace);
+             }
+
+        }
+
+        public bool PrintReceipt(string sPrintOption, string sEmail = null)
+        {
+            Boolean bResults = false;
+            try
+            {
+                VerifyAppStateAndLabel(StateConstants.STATE_9905, AppConstants.PRINT_RECEIPT_PROMPT);
+
+                switch (sPrintOption)
+                {
+                    case "Print":
+                        PressSpecialKey(KeyboardInput.SpecialKeys.F1);
+                        break;
+                    case "Email":
+                        PressSpecialKey(KeyboardInput.SpecialKeys.F2);
+                        //To Be Implemented
+                        break;
+                    case "PrintAndEmail":
+                        PressSpecialKey(KeyboardInput.SpecialKeys.F3);
+                        //To Be Implemented
+                        break;
+                }
+                return (!bResults);
+            }
+            catch (Exception ex)
+            {
+                return bResults;
+                throw new AutomationException("Error: The App Failed to Print the Receipt", ex.StackTrace);
+            }
+        }
+
         public void TenderTransactionWithCash()
         {
-
             ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_TENDER);
             wVStoreMainWindow.WaitWhileBusy();
             Thread.Sleep(2000);
@@ -152,62 +302,20 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             if (VerifyAppStateAndLabel(StateConstants.STATE_7000, AppConstants.PAYMENT_MODE_PROMPT))
             {
                 PressSpecialKey(KeyboardInput.SpecialKeys.F3);
-                //PressEnter(wVStoreMainWindow);
+                VerifyAppStateAndLabel(StateConstants.STATE_7040, AppConstants.ENTER_TENDER_AMT_PROMPT);
 
-                Thread.Sleep(CommonData.iMinWait);
-                VerifyAppStateAndLabel(StateConstants.STATE_7040, "Please enter the tender amount.");
                 PressEnter(wVStoreMainWindow);
+                VerifyAppStateAndLabel(StateConstants.STATE_9900, AppConstants.ENTER_CHANGE_DUE_PROMPT);
 
-                Thread.Sleep(CommonData.iMinWait);
-                VerifyAppStateAndLabel(StateConstants.STATE_9900, "Change Due ...");
                 PressSpecialKey(KeyboardInput.SpecialKeys.F1);
-                //PressEnter(wVStoreMainWindow);
+                VerifyAppStateAndLabel(StateConstants.STATE_9905, AppConstants.PRINT_RECEIPT_PROMPT);
 
-                Thread.Sleep(CommonData.iMinWait);
-                VerifyAppStateAndLabel(StateConstants.STATE_9905, "Email / Print Receipt");
                 PressEnter(wVStoreMainWindow);
             }
             else
             {
                 LoggerUtility.WriteLog("Fail: Failed to tender the transaction with Cash");
             }
-        }
-
-        public bool SuspendTransaction()
-        {
-            ClickOnButton(ButtonConstants.BTN_PANEL_NEXT);
-            PressSpecialKey(KeyboardInput.SpecialKeys.F1);
-            Thread.Sleep(2500);
-            return VerifyAppState(StateConstants.STATE_200);
-        }
-
-        public bool HoldTransaction()
-        {
-            VerifyAppState(StateConstants.STATE_1000);
-            PressSpecialKey(KeyboardInput.SpecialKeys.F11);
-            Thread.Sleep(CommonData.iMinWait);
-            ClickOnButton(wHoldExpiryDateWin, "btnSelectPromiseDate");
-            Thread.Sleep(CommonData.iMinWait);
-            wVStoreMainWindow.WaitWhileBusy();
-            return VerifyAppState(StateConstants.STATE_200);
-        }
-
-        public bool VoidTransaction()
-        {
-            ClickOnButton(ButtonConstants.BTN_PANEL_NEXT);
-            PressSpecialKey(KeyboardInput.SpecialKeys.F3);
-            Thread.Sleep(2500);
-            return VerifyAppState(StateConstants.STATE_200);
-        }
-
-        public bool ResumeTransaction()
-        {
-            ClickOnButton(ButtonConstants.BTN_RESUME);
-
-            Employee Emp = new Employee();
-            Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
-            Thread.Sleep(2500);
-            return wResumeTransactionWin.Enabled;
         }
 
         public void SelectResumeTransactionTab(int iHoldOrSuspend)
@@ -237,7 +345,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             return tableResumeTransaction.Row(AppConstants.HEADR_TRAN_NUM, sTransactionNumber.Substring(14)).Enabled;
         }
 
-        public bool IsTransactionOnHoldAtCustInfo(string sTransactionNumber)
+        public bool IsTransactionOnHoldAtCustForm(string sTransactionNumber)
         {
             Customer Cust = new Customer();
             Cust.SelectFromCustomerInfoTab(AppConstants.TAB_CUST_ONHOLD);
