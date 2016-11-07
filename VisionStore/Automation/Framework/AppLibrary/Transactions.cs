@@ -20,6 +20,9 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
     
     public class Transactions : CommonUtility
     {
+        /// <summary>
+        /// Defenition for Transaction Window 
+        /// </summary>
         public Window wResumeTransactionWin
         {
             get
@@ -28,6 +31,9 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Defenition for Transaction Window 
+        /// </summary>
         private Window wHoldExpiryDateWin
         {
             get
@@ -36,6 +42,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Select Sell/Return Button 
+        /// </summary>
+        /// <returns>True or False based on the Expected State</returns>
         public bool StartTransaction()
         {
             try
@@ -52,6 +62,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Select Suspend Transaction Button
+        /// </summary>
+        /// <returns>True Or False based on the Expected Appstate</returns>
         public bool SuspendTransaction()
         {
             try
@@ -68,6 +82,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Select the Hold Transaction Button and accepts the Expiry Date Window
+        /// </summary>
+        /// <returns>True or False based on the Expected State</returns>
         public bool HoldTransaction()
         {
             try
@@ -86,6 +104,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
 
         }
 
+        /// <summary>
+        /// Selects the Recover Transaction Button
+        /// </summary>
+        /// <returns>True of False based on the expected State</returns>
         public bool SelectRecoverTransactions()
         {
             try
@@ -102,6 +124,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Selects the Void Transaction Button
+        /// </summary>
+        /// <returns>True of False based on the expected State</returns>
         public bool VoidTransaction()
         {
             try
@@ -118,6 +144,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Selects the Resume Transaction Button
+        /// </summary>
+        /// <returns>True of False based on the expected State</returns>
         public bool ResumeTransaction()
         {
             Employee Emp = new Employee();
@@ -136,6 +166,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Enter the Barcode value into the textfield based on the input parameter
+        /// </summary>
+        /// <param name="sBarCode"></param>
         public void ScanBarCode(string sBarCode) 
         {
             try
@@ -151,8 +185,14 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Enter the Barcode value based on the input parameter and tender the transaction with cash
+        /// </summary>
+        /// <param name="sBarCode"></param>
         public void ScanBarCodeAndTender(string sBarCode)
         {
+            //TODO - Modify the method to pass a generic Tender Type
+
             try
             {
                 ScanBarCode(sBarCode);
@@ -164,6 +204,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public bool NoTransactionAppState()
         {
             Label appState_461 = GetAppState(StateConstants.STATE_461);
@@ -227,29 +271,32 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
-        public bool PayWithCash(string sPaymentAmount = null)
+        public bool PayWithCash(string sTenderAmount = null)
         {
-            string sChangeDueValue;
-
+            double dChangeDueValue;
+            
             try
             {
                 VerifyAppStateAndLabel(StateConstants.STATE_7000, AppConstants.PAYMENT_MODE_PROMPT);
                 PressSpecialKey(KeyboardInput.SpecialKeys.F3);
                 VerifyAppStateAndLabel(StateConstants.STATE_7040, AppConstants.ENTER_TENDER_AMT_PROMPT);
 
-                if (sPaymentAmount == null)
+                if (sTenderAmount == null)
                 {
+                    //Need to Get the 
                     PressEnter(wVStoreMainWindow);
                     VerifyAppStateAndLabel(StateConstants.STATE_9900, AppConstants.ENTER_CHANGE_DUE_PROMPT);
-                    sChangeDueValue = GetPanel(wVStoreMainWindow, "txtSku").Text.ToString();
-                    Assert.True(sChangeDueValue == "0.00", "Change Due Value is not matching with the Product Cost");
+                    dChangeDueValue = Convert.ToDouble(GetPanel(wVStoreMainWindow, "txtSku").Text.ToString());
+                    Assert.True(dChangeDueValue == 0.00, "Change Due Value is not matching with the Product Cost");
                 }
                 else
                 {
-                    EnterCredential(sPaymentAmount);
+                    double dTenderAmount = Convert.ToDouble(sTenderAmount);
+                    EnterCredential(sTenderAmount);
                     VerifyAppStateAndLabel(StateConstants.STATE_9900, AppConstants.ENTER_CHANGE_DUE_PROMPT);
-                    sChangeDueValue = GetPanel(wVStoreMainWindow, "txtSku").Text.ToString();
-                    Assert.True(sChangeDueValue != "0.00", "Change Due Value is not matching with the Entered Tender Amount");
+                    dChangeDueValue = Convert.ToDouble(GetPanel(wVStoreMainWindow, "txtSku").Text.ToString());
+                    //Assert.True(dChangeDueValue != 0.00, "Change Due Value is not matching with the Entered Tender Amount");
+                    //
                 }
 
                 PressSpecialKey(KeyboardInput.SpecialKeys.F1);
@@ -350,6 +397,9 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             Customer Cust = new Customer();
             Cust.SelectFromCustomerInfoTab(AppConstants.TAB_CUST_ONHOLD);
             ListView TableOnHoldInfo = GetListView(Cust.wCustomerWin, AppConstants.TBL_CUST_ONHOLD_TRANS);
+            Panel pnlDetails = GetPanel(Cust.wCustomerWin, "pnlDetails");
+
+
             return TableOnHoldInfo.Row(AppConstants.HEADR_TRAN_NUM, sTransactionNumber.Substring(14)).Enabled;
         }
 
