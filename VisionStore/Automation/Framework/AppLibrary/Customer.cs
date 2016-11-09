@@ -141,11 +141,6 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
 
         public bool AddCustomer()
         {
-            //TO-DO : Incomplete Methods
-        /// <summary>
-        /// The Class is used to add a new customer in the Customer Window
-        /// </summary>
-
             Boolean bResults = false;
             try
             {
