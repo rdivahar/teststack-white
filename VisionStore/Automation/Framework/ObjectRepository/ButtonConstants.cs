@@ -3,6 +3,7 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
 {
     public static class ButtonConstants
     {
+      
         //CustomerScreen - Elements
         public static string BTN_CUSTOMER = "btnCustomerSearch";
         public static string BTN_ADD_CUST = "fBtnAdd";
@@ -12,13 +13,17 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
         //MainScreen
         public static string BTN_OPENTERMINAL = "btn0";
         public static string BTN_SELL_RETURN = "btn0";
+        public static string BTN_CANCEL = "btn0";
         public static string BTN_DIST_ORDER_MANAGEMENT = "btnTagItem";
-        public static string BTN_RECOVER_TRANSACTIONS = "btn6";
+        public static string BTN_RECOVER_TRANSACTIONS = "btn7";
         public static string BTN_TENDER = "btn5";
         public static string BTN_CUST_TAG = "btnCustomer";
         public static string BTN_PANEL_NEXT = "btnNext";
         public static string BTN_RESUME = "btn4";
         public static string BTN_APPLY = "fbtnApply";
+        public static string BTN_TRANSACTION_MERGE = "btn5";
+
+
     }
 }
 

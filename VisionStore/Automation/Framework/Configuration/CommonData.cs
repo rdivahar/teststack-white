@@ -18,29 +18,34 @@ using System.Threading;
 namespace Jesta.VStore.Automation.Framework.Configuration
 {
     public static class CommonData
-    {     
+    {
+       
         //Application Data
         public static string PROG_PATH = @"C:\VisionStore\VSClient\VisionStore.exe";
         public static string PROG_NAME = "VisionStore";
-        public static string Proj_Path = "C:\\JestaDesktopAutomation\\VisionStore\\Automation\\";
-       
+        public static string Proj_Path = "C:\\Users\\qhe\\Documents\\Visual Studio 2015\\Projects\\VisionStore\\Automation\\";
+
         //Employee Info 
         public static string EMP_ID = "8600";
         public static string EMP_PWD = "jestais";
-        public static string SALES_ADVISOR_ID = "5656";
+        public static string SALES_ADVISOR_ID = "1001";
 
         //Customer Info
-        public static string sCutomerName = "Paul Summer";
+        public static string sCutomerName = "Paul Summer"; 
 
         //Product Details
-        public static string BLUE_MINISTR_PRODCODE = "05630672-01";
-        public static string VJ_PEREWINKLE_CREW = "05630672-01"; 
+        public static string BLUE_MINISTR_PRODCODE = "01050896-06";
+        public static string VJ_PEREWINKLE_CREW = "53364005-01";
+        public static string HUGO_BOSS_SOCKS = "05630001-01";
+        public static string ZERIA_BLACK_9 = "499999018750";
 
         //TimeOut Wait Data
-        public static int iMinWait = 1000;
-        public static int iLoadingTime = 2500;
-        public static int iWinLoadingWait = 1500;
-        public static int iMicroSyncWait = 500;
+        public static int iMinWait = 500;
+        public static int iLoadingTime = 1000;
+        public static int iWinLoadingWait = 1000;
+
+        //Payment Method
+        public static string BY_CASH = "Cash";
     }
 }
 

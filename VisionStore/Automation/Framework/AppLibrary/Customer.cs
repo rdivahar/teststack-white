@@ -67,7 +67,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             {
                 Console.WriteLine("Searching thre customer with Name: " + sCustomer);
                 SearchCustomers(sCustomer);
-                Thread.Sleep(5000);
+                Thread.Sleep(1000);
                 wCustomerWin.WaitWhileBusy();
                 ClickOnButton(wCustomerWin, "fBtnSetAsCustomer");
                 Thread.Sleep(CommonData.iLoadingTime);
@@ -88,10 +88,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             try
             {
                 wCustomerWin.WaitWhileBusy();
-                SetTextByClassName(wCustomerWin, AppConstants.TXT_SEARCH_CLASSNAME, sCustomer);
+                SetTextByID(wCustomerWin, AppConstants.TXT_SEARCH_ID, sCustomer);
                 ClickOnButton(GetButton(wCustomerWin, ButtonConstants.BTN_SEARCH_CUST));
                 wCustomerWin.WaitWhileBusy();
-                Thread.Sleep(5000);
+                Thread.Sleep(1000);
 
                 Label SearchResults = GetLabel(wCustomerWin, AppConstants.LBL_SEARCH_RESULTS);
                 if (SearchResults.Text != "Displaying 1 of 1 Customer")
@@ -174,7 +174,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
 
         public bool IsCustomerSelected(string sExpectedCust)
         {
-            Thread.Sleep(3000);
+            Thread.Sleep(1000);
             Label sActualCust = GetLabel(wCustomerWin, AppConstants.LABEL_CUSTOMER_ID);
             return (sActualCust.Name.Contains(sExpectedCust));
         }

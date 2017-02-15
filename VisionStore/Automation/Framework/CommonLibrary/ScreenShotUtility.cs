@@ -16,7 +16,8 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
 
         private string TakeScreenshot1(string screenshotName)
         {
-            string screenshotDir = "C:\\JestaDesktopAutomation\\VisionStore\\Automation\\Screenshots";
+            string screenshotDir = "C:\\Users\\qhe\\Documents\\Visual Studio 2015\\Projects\\VisionStore\\Automation\\Screenshots";
+            //string screenshotDir = "C:\\JestaDesktopAutomation\\VisionStore\\Automation\\Screenshots";//VM screenshot
             var imagename = screenshotName + ".png";
             var imagePath = Path.Combine(screenshotDir, imagename);
             try
@@ -39,7 +40,9 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
 
         public static void TakeScreenshot(string screenshotName)
         {
-            string screenshotDir = "C:\\JestaDesktopAutomation\\VisionStore\\Automation\\Screenshots";
+           string screenshotDir = "C:\\Users\\qhe\\Documents\\Visual Studio 2015\\Projects\\VisionStore\\Automation\\Screenshots";
+           //string screenshotDir = "C:\\JestaDesktopAutomation\\VisionStore\\Automation\\Screenshots";//VM screenshot
+
             var imagename = screenshotName + ".png";
             var filename = Path.Combine(screenshotDir, imagename);
             var bitmap = CaptureScreenshot();
@@ -48,7 +51,8 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
 
         public static string GetScreenshot(string ssName)
         {
-            string screenshotDir = "C:\\JestaDesktopAutomation\\VisionStore\\Automation\\Screenshots";
+            string screenshotDir = "C:\\Users\\qhe\\Documents\\Visual Studio 2015\\Projects\\VisionStore\\Automation\\Screenshots";
+            //string screenshotDir = "C:\\JestaDesktopAutomation\\VisionStore\\Automation\\Screenshots";//VM screenshot
             var imagename = ssName + ".png";
             var filepath = Path.Combine(screenshotDir, imagename);
 

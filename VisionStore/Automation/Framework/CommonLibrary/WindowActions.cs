@@ -125,6 +125,15 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             Thread.Sleep(2000);
         }
 
+        public void SetTextByID(Window wVStoreWin, string sAutoID, string sTxtvalue)
+        {
+            TextBox txtField = wVStoreWin.Get<TextBox>(SearchCriteria.ByAutomationId(sAutoID));
+            txtField.Focus();
+            txtField.Enter(sTxtvalue);
+            wVStoreWin.WaitWhileBusy();
+            Thread.Sleep(1500);
+        }
+
         public void WaitForObjectExists(UIItem OBJToWait, int iWaitTime)
         {
            

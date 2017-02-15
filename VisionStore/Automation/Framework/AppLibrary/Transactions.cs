@@ -223,7 +223,9 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         {
             Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
             bool bNoTransMessage = (majorPromptLabel.NameMatches("There are no transactions to transfer."));
-            wVStoreMainWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F1);
+
+            //wVStoreMainWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F1);
+            ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);//PressSpecialKey(KeyboardInput.SpecialKeys.F1);
             wVStoreMainWindow.WaitWhileBusy();
             return bNoTransMessage;
         }
@@ -368,7 +370,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         {
             ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_TENDER);
             wVStoreMainWindow.WaitWhileBusy();
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
 
             if (VerifyAppStateAndLabel(StateConstants.STATE_7000, AppConstants.PAYMENT_MODE_PROMPT))
             {
@@ -508,8 +510,9 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         public bool MergeTransaction()
         {
             ClickOnButton(ButtonConstants.BTN_PANEL_NEXT);
-            PressSpecialKey(KeyboardInput.SpecialKeys.F7);
-            Thread.Sleep(3000);
+            //PressSpecialKey(KeyboardInput.SpecialKeys.F6);
+            ClickOnButton(wVStoreMainWindow,ButtonConstants.BTN_TRANSACTION_MERGE);
+            Thread.Sleep(1000);
             LoggerUtility.StatusInfo("Merging The Transaction");
             return wMergeTransactionWin.Enabled;
         }
