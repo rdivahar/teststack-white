@@ -38,6 +38,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
                     //Verify the State Transition to [1000]
                     this.EnterCredential(sSalesAdvisorID);                 
                     Label appState_1000 = GetAppState(StateConstants.STATE_1000);
+                    LoggerUtility.StatusInfo("Entered The Sales Advisor Details With ID "+ sSalesAdvisorID);
                     Assert.True(appState_1000.Enabled);
                 }
                 catch (AssertionException ex)
@@ -71,9 +72,28 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             EnterEmployeePasscode(sPasscode);
             Thread.Sleep(CommonData.iLoadingTime);
             wVStoreMainWindow.WaitWhileBusy();
+            LoggerUtility.StatusInfo("Authenticated Employee Details");
         }
 
-        public void EnterEmployeePasscode(string sPasscode)
+        public bool EnterEmployeePasscode(string sPasscode)
+        {
+            Boolean bResults = false;
+            Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
+            LoggerUtility.WriteLog(majorPromptLabel.ToString());
+            if (majorPromptLabel.NameMatches(AppConstants.ENTER_EMPPWD_PROMPT))
+            {
+                Thread.Sleep(1500);
+                EnterCredential(sPasscode);
+                Thread.Sleep(1000);
+                return (!bResults);
+            } else
+            {
+                LoggerUtility.WriteLog("Failure To Enter Employee Passcode");
+                return bResults;
+            }
+        }
+
+        public void EnterEmployeePasscode_Old(string sPasscode)
         {
             Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
             if (majorPromptLabel.NameMatches(AppConstants.ENTER_EMPPWD_PROMPT))
@@ -89,8 +109,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         {
             EnterEmployeeNumber(sEmpNmbr);
             EnterEmployeePasscode(sPasscode);
-            Thread.Sleep(3000);
+            Thread.Sleep(1500);
+            Console.WriteLine("<Info> The user authentication for the Emp: " + sEmpNmbr);
             wVStoreMainWindow.WaitWhileBusy();
+            LoggerUtility.StatusInfo("Authenticated The Employee With The # "+ sEmpNmbr); 
         }
     }
 }

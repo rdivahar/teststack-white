@@ -17,38 +17,84 @@ using TestStack.White.UIItems.WPFUIItems;
 using System.Windows.Automation;
 using NUnit.Framework;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Jesta.VStore.Automation.Framework.CommonLibrary
     {
     public class CommonUtility : WindowActions
     {
-
         WindowBase wBase = new WindowBase();
         WindowActions wAction = new WindowActions();
 
-        public void OpenTerminal()
+        /// <summary>
+        /// Open the terminal and validate the Application States
+        /// </summary>
+        /// <returns>True or False</returns>
+        public bool OpenTerminal()
         {
-            Label appState = wBase.GetLabel(wVStoreMainWindow, StateConstants.APPSTATE_LABEL_ID);
-            VStoreApp.WaitWhileBusy();
+            Boolean bResults = false;
+            wVStoreMainWindow.WaitWhileBusy();
 
-            if (appState.NameMatches(StateConstants.STATE_130))
+            try
             {
-                wAction.ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_OPENTERMINAL);
-                Assert.True(appState.NameMatches(StateConstants.STATE_140));             
+                VerifyAppState(StateConstants.STATE_130);
+                ClickOnButton(ButtonConstants.BTN_OPENTERMINAL);
+                VerifyAppState(StateConstants.STATE_140);
+                Console.WriteLine("Info: Opening the Terminal");
+                return (!bResults);
             }
-            else
+            catch (Exception Ex)
             {
-                Console.WriteLine("Failure Message: Failed to Open the Terminal");
-            }                
+                return bResults;
+                throw new AutomationException("Error: The Application failed to Open a Terminal", Ex.StackTrace);
+            }               
         }
 
-        public void EnterCredential(string sID)
+        /// <summary>
+        /// Entering the ke
+        /// </summary>
+        /// <param name="sID"></param>
+        /// <returns></returns>
+        public bool EnterCredential(string sID)
         {
-            wVStoreMainWindow.Keyboard.Enter(sID);
-            wVStoreMainWindow.WaitWhileBusy();
-            Thread.Sleep(1000);
-            PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
-            Thread.Sleep(CommonData.iMinWait);
+            Boolean bResults = false;
+
+            try
+            {
+                EnterFromKeyborad(wVStoreMainWindow, sID);
+                PressEnter(wVStoreMainWindow);
+                Console.WriteLine("Info: Entering the Value " + sID);
+                return (!bResults);
+            }
+            catch (Exception Ex)
+            {
+                return bResults;
+                throw new AutomationException("Error: The Application failed to Enter the Input "+ sID, Ex.StackTrace);
+            }
+
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public string GetCurrentMethod()
+        {
+            StackTrace st = new StackTrace();
+            StackFrame sf = st.GetFrame(1);
+
+            return sf.GetMethod().Name;
+        }
+
+        public string GetCurrentTestName()
+        {
+            return System.Reflection.MethodBase.GetCurrentMethod().Name;
+        }
+
+        public int tet()
+        {
+            Label AppState = GetLabel(wVStoreMainWindow, AppConstants.APPSTATE_LABEL_ID);
+            string sCurrentAppState = AppState.Text.Split('[', ']')[1];
+            int iAppStateValue = Int32.Parse(sCurrentAppState);
+            LoggerUtility.StatusInfo("The State Of The Application Is"+ iAppStateValue+"");
+            return iAppStateValue;
         }
 
         public bool VerifyAppStateAndLabel(string sAppStateText, string sIdentificationLabel)
@@ -63,28 +109,12 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
 
             if (majorPromptLabel.NameMatches(sIdentificationLabel) && appState.NameMatches(sAppStateText))
             {
-                return true; 
+                Console.WriteLine("Info: The App has loaded the State " + sAppStateText + " and Label "+ sIdentificationLabel);
+                return (!bResults); 
             }else
             {
-                Console.WriteLine("Failure: The Application failed to load the expected Appstate: " + sAppStateText);
                 return bResults;
             }
-        }
-
-        public void OpenTerminalUsingKeyStrokes(string sEmpName, string sPasscode)
-        {
-            //InvokeVStore();
-            PressSpecialKey(KeyboardInput.SpecialKeys.F1);
-
-            wVStoreMainWindow.Keyboard.Enter(sEmpName);
-            PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
-            
-            wVStoreMainWindow.Keyboard.Enter(sPasscode);
-            PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
-
-            wVStoreMainWindow.Close();
-            wVStoreMainWindow.Dispose();
-            Thread.Sleep(CommonData.iLoadingTime);
         }
         }  
       }

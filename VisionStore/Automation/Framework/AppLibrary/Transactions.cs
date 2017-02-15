@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using TestStack.White;
 using System.Diagnostics;
 using System.Threading;
@@ -42,17 +44,25 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        public Window wMergeTransactionWin
+        {
+            get
+            {
+                return GetChildWindowByID(wVStoreMainWindow, AppConstants.WIN_MERGE_TRANSACTIONS);
+            }
+        }
+        
         /// <summary>
         /// Select Sell/Return Button 
         /// </summary>
-        /// <returns>True or False based on the Expected State</returns>
+        /// <returns>True or False based on the Expected App State</returns>
         public bool StartTransaction()
         {
             try
             {
                 VerifyAppState(StateConstants.STATE_200);
                 ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_SELL_RETURN);
-                Console.WriteLine("Info: Starting the Transaction");
+                LoggerUtility.StatusInfo("Started the Transaction");
                 return VerifyAppState(StateConstants.STATE_900);
             }
             catch (Exception ex)
@@ -71,8 +81,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             try
             {
                 ClickOnButton(ButtonConstants.BTN_PANEL_NEXT);
+                LoggerUtility.WriteLog("Clicked the Next Button");
                 PressSpecialKey(KeyboardInput.SpecialKeys.F1);
                 wVStoreMainWindow.WaitWhileBusy();
+                LoggerUtility.StatusInfo("Suspending The Transaction");
                 return VerifyAppState(StateConstants.STATE_200);
             }
             catch (Exception ex)
@@ -115,6 +127,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
                 wVStoreMainWindow.WaitWhileBusy();
                 VerifyAppState(StateConstants.STATE_200);
                 ClickOnButton(ButtonConstants.BTN_RECOVER_TRANSACTIONS);
+                LoggerUtility.StatusInfo("Selected RecoverTransactions");
                 return VerifyAppState(StateConstants.STATE_9010);
             }
             catch (Exception ex)
@@ -157,6 +170,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
                 ClickOnButton(ButtonConstants.BTN_RESUME);
                 Emp.AuthenticateUser(CommonData.EMP_ID, CommonData.EMP_PWD);
                 Thread.Sleep(CommonData.iWinLoadingWait);
+                LoggerUtility.StatusInfo("Resuming The Transaction");
                 return wResumeTransactionWin.Enabled;
             }
             catch (Exception ex)
@@ -176,6 +190,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             {
                 VerifyAppStateAndLabel(StateConstants.STATE_1000, AppConstants.SCAN_BARCODE_LABEL);
                 EnterCredential(sBarCode);
+                LoggerUtility.StatusInfo("The Barcode Of The Scanned Product # " + sBarCode);
                 Assert.True(VerifyAppState(StateConstants.STATE_1000), "The Application is not in " + StateConstants.STATE_1000);
                 Console.WriteLine("Info: The Application is in State: " + StateConstants.STATE_1000);
              }
@@ -204,16 +219,6 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public bool NoTransactionAppState()
-        {
-            Label appState_461 = GetAppState(StateConstants.STATE_461);
-            return (appState_461.NameMatches(StateConstants.STATE_461));
-        }
-
         public bool NoTransactionToTransaferMessage()
         {
             Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
@@ -223,6 +228,11 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             return bNoTransMessage;
         }
 
+        /// <summary>
+        /// Tender the transaction based on the passed Tender Type and the Tender Amount (Optional)
+        /// </summary>
+        /// <param name="sTenderType"></param>
+        /// <param name="sTenderAmount"></param>
         public void TenderTransaction(string sTenderType, string sTenderAmount = null)
         {
             try
@@ -271,6 +281,11 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Make a payment for the scanned product using Cash based on the entered amount  
+        /// </summary>
+        /// <param name="sTenderAmount"></param>
+        /// <returns>True or False based on the Expected Appstate</returns>
         public bool PayWithCash(string sTenderAmount = null)
         {
             double dChangeDueValue;
@@ -296,7 +311,6 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
                     VerifyAppStateAndLabel(StateConstants.STATE_9900, AppConstants.ENTER_CHANGE_DUE_PROMPT);
                     dChangeDueValue = Convert.ToDouble(GetPanel(wVStoreMainWindow, "txtSku").Text.ToString());
                     //Assert.True(dChangeDueValue != 0.00, "Change Due Value is not matching with the Entered Tender Amount");
-                    //
                 }
 
                 PressSpecialKey(KeyboardInput.SpecialKeys.F1);
@@ -310,6 +324,12 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
 
         }
 
+        /// <summary>
+        /// Print, Email, Print Email the receipt based on the Print Option and Email (Optional)
+        /// </summary>
+        /// <param name="sPrintOption"></param>
+        /// <param name="sEmail"></param>
+        /// <returns></returns>
         public bool PrintReceipt(string sPrintOption, string sEmail = null)
         {
             Boolean bResults = false;
@@ -331,6 +351,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
                         //To Be Implemented
                         break;
                 }
+                LoggerUtility.StatusInfo("Printing the Receipt & The Option is " + sPrintOption);
                 return (!bResults);
             }
             catch (Exception ex)
@@ -340,6 +361,9 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Tender the Transaction with the Product COst
+        /// </summary>
         public void TenderTransactionWithCash()
         {
             ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_TENDER);
@@ -365,6 +389,10 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Select the Tab in the Resume Transaction Child Window - From Suspend Or Hold
+        /// </summary>
+        /// <param name="iHoldOrSuspend"></param>
         public void SelectResumeTransactionTab(int iHoldOrSuspend)
         { 
             Tab tabCtrlResumeTransactions = GetTab(wResumeTransactionWin, AppConstants.TAB_CTRL_RESUMETRANSACTIONS);
@@ -372,12 +400,23 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             Thread.Sleep(CommonData.iLoadingTime);
         }
 
+        /// <summary>
+        /// Get the Current transaction number of the active transaction in Progress
+        /// </summary>
+        /// <returns>Transaction #</returns>
         public string GetCurrentTransactionNmbr()
         {
             Label lblTransactionNumber = GetLabel(AppConstants.LBL_TRANS_NUM);
-            return lblTransactionNumber.Name.ToString();
+            string TransNumber = lblTransactionNumber.Name.ToString();
+            LoggerUtility.StatusInfo("The Current Transaction Number Is " + TransNumber);
+            return TransNumber;
         }
 
+        /// <summary>
+        /// Verify the Trasaction is Suspended, and available in the Suspended Transactions Table
+        /// </summary>
+        /// <param name="sTransactionNumber"></param>
+        /// <returns>True Or False</returns>
         public bool IsTransactionSuspended(string sTransactionNumber)
         {
             this.SelectResumeTransactionTab(AppConstants.TAB_SUSPEND);
@@ -385,6 +424,11 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             return tableResumeTransaction.Row(AppConstants.HEADR_TRAN_NUM, sTransactionNumber.Substring(14)).Enabled;
         }
 
+        /// <summary>
+        /// Verify the Trasaction is on Hold, and available in the Suspended Transactions Table
+        /// </summary>
+        /// <param name="sTransactionNumber"></param>
+        /// <returns>True Or False</returns>
         public bool IsTransactionOnHold(string sTransactionNumber)
         {
             this.SelectResumeTransactionTab(AppConstants.TAB_HOLD);
@@ -392,17 +436,25 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             return tableResumeTransaction.Row(AppConstants.HEADR_TRAN_NUM, sTransactionNumber.Substring(14)).Enabled;
         }
 
+        /// <summary>
+        /// Verify the Trasaction is on Hold, and available in the Customer Win Details Area
+        /// </summary>
+        /// <param name="sTransactionNumber"></param>
+        /// <returns>True Or False</returns>
         public bool IsTransactionOnHoldAtCustForm(string sTransactionNumber)
         {
             Customer Cust = new Customer();
             Cust.SelectFromCustomerInfoTab(AppConstants.TAB_CUST_ONHOLD);
-            ListView TableOnHoldInfo = GetListView(Cust.wCustomerWin, AppConstants.TBL_CUST_ONHOLD_TRANS);
+            ListView TableOnHoldInfo = GetListView(Cust.wCustomerWin, AppConstants.TBL_CUST_ONHOLD_TRANS, 1);
             Panel pnlDetails = GetPanel(Cust.wCustomerWin, "pnlDetails");
-
-
             return TableOnHoldInfo.Row(AppConstants.HEADR_TRAN_NUM, sTransactionNumber.Substring(14)).Enabled;
         }
 
+        /// <summary>
+        /// Selects a Suspended Or OnHold Transaction from the Table based on the passed Transaction # as Parameter 
+        /// </summary>
+        /// <param name="sTranNo"></param>
+        /// <returns></returns>
         public bool SelectFrmResumeTransactionGrid(string sTranNo)
         {
             Boolean bResults = false;
@@ -419,6 +471,11 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }  
         }
 
+        /// <summary>
+        /// Void a Suspeded Transaction, from the Suspended Transaction Table
+        /// </summary>
+        /// <param name="sTransactionNumber"></param>
+        /// <returns>True Or False</returns>
         public bool VoidSuspendedTransaction(string sTransactionNumber)
         {
             String sTranNo = sTransactionNumber.Substring(14);
@@ -431,6 +488,11 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             return VoidTransaction();
         }
 
+        /// <summary>
+        /// Void a OnHold Transaction, from the OnHold Transaction Table
+        /// </summary>
+        /// <param name="sTransactionNumber"></param>
+        /// <returns></returns>
         public bool VoidOnHoldTransaction(string sTransactionNumber)
         {
             String sTranNo = sTransactionNumber.Substring(14);
@@ -442,8 +504,28 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             VerifyAppState(StateConstants.STATE_1000);
             return VoidTransaction();
         }
+
+        public bool MergeTransaction()
+        {
+            ClickOnButton(ButtonConstants.BTN_PANEL_NEXT);
+            PressSpecialKey(KeyboardInput.SpecialKeys.F7);
+            Thread.Sleep(3000);
+            LoggerUtility.StatusInfo("Merging The Transaction");
+            return wMergeTransactionWin.Enabled;
+        }
+
+        public void SelectCorrespondingTransaction(string sTransactionNumber)
+        {
+            String sTranNo = sTransactionNumber.Substring(14);
+
+            SelectFrmResumeTransactionGrid(sTranNo);
+            ClickOnButton(wResumeTransactionWin, ButtonConstants.BTN_APPLY);
+            Thread.Sleep(CommonData.iLoadingTime);
+            wVStoreMainWindow.WaitWhileBusy();
+
+        }
     }
-  }
+}
 
 
 

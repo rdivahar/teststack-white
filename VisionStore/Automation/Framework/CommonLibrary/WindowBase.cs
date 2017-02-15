@@ -32,6 +32,9 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             return new ProcessStartInfo(CommonData.PROG_PATH);
         }
 
+        /// <summary>
+        /// Base method to trigger the Vision Store Application 
+        /// </summary>
         public void Init()
         {
             var processInfo = new ProcessStartInfo(CommonData.PROG_PATH);
@@ -51,11 +54,19 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             {
                 Assert.Fail("Application Error:" + CommonData.PROG_NAME + "failed to Launch");
             }
+            Thread.Sleep(CommonData.iLoadingTime);
         }
 
+        /// <summary>
+        /// Base method to close the Vision Store Application 
+        /// </summary>
         public void Exit()
         {
-            if (wVStoreMainWindow != null && wVStoreMainWindow.Visible.Equals(true))
+            if (VStoreApp != null)
+            {
+                VStoreApp.Kill();
+            }
+            else if (wVStoreMainWindow != null && wVStoreMainWindow.Visible.Equals(true))
             {
                 wVStoreMainWindow.Focus();
                 wVStoreMainWindow.Close();
@@ -65,13 +76,25 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             {
                 LoggerUtility.WriteLog("Application Error" + CommonData.PROG_NAME + " Not Found / Cannot Be Closed");
             }
+
+            Thread.Sleep(5000);
         }
 
+        /// <summary>
+        /// Wait while any Vision Store Window is loading  busy 
+        /// </summary>
+        /// <param name="wWin">Window</param>
         public void WaitForWinToLoad(Window wWin)
         {
             wWin.WaitWhileBusy();
         }
 
+        /// <summary>
+        /// Get any Text Label based on the input Window and Label ID 
+        /// </summary>
+        /// <param name="wVStoreWin">Window</param>
+        /// <param name="sAutomationID">Automation ID of the Label</param>
+        /// <returns>Label</returns>
         public Label GetLabel(Window wVStoreWin, string sAutomationID)
         {
             wVStoreWin.WaitWhileBusy();
@@ -79,6 +102,11 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             return Label;
         }
 
+        /// <summary>
+        /// Get the Label on the MainWin based on the Button ID
+        /// </summary>
+        /// <param name="sAutomationID">Automation ID of the Label</param>
+        /// <returns>Label</returns>
         public Label GetLabel(string sAutomationID)
         {
             wVStoreMainWindow.WaitWhileBusy();
@@ -86,6 +114,11 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             return Label;
         }
 
+        /// <summary>
+        /// Get the Button on the MainWin based on the Button ID
+        /// </summary>
+        /// <param name="sAutomationID">Automation ID of the Button ID</param>
+        /// <returns>Button</returns>
         public Button GetButton(string sAutomationID)
         {
             wVStoreMainWindow.WaitWhileBusy();
@@ -93,6 +126,12 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             return Button;
         }
 
+        /// <summary>
+        /// Get the Button based on the input Window and Button ID
+        /// </summary>
+        /// <param name="wVStoreWin"></param>
+        /// <param name="sAutomationID"></param>
+        /// <returns>Button</returns>
         public Button GetButton(Window wVStoreWin, string sAutomationID)
         {
             wVStoreWin.WaitWhileBusy();
@@ -100,6 +139,12 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             return Button;
         }
 
+        /// <summary>
+        /// Get the Button based on the input Window and Button Text
+        /// </summary>
+        /// <param name="wVStoreWin">Window</param>
+        /// <param name="sText">Unique Text Identifier of the Button</param>
+        /// <returns>Button</returns>
         public Button GetButtonUsingText(Window wVStoreWin, string sText)
         {
             wVStoreWin.WaitWhileBusy();
@@ -107,18 +152,36 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             return Button;
         }
 
+        /// <summary>
+        /// Get the TextBox based on the input Window and TextBox ClassName
+        /// </summary>
+        /// <param name="wVStoreWin"></param>
+        /// <param name="sClassName"></param>
+        /// <returns>TextBox</returns>
         public TextBox GetTextBox(Window wVStoreWin, string sClassName)
         {
             wVStoreWin.WaitWhileBusy();
             return wVStoreWin.Get<TextBox>(SearchCriteria.ByClassName(sClassName));
         }
 
+        /// <summary>
+        /// Get the Child Window based on the Parent Window and the Windows Automation ID
+        /// </summary>
+        /// <param name="wParentWindow"></param>
+        /// <param name="sAutomationID"></param>
+        /// <returns>Window</returns>
         public Window GetChildWindowByID(Window wParentWindow, string sAutomationID)
         {
             Window childWindow = wParentWindow.ModalWindow(SearchCriteria.ByAutomationId(sAutomationID));
             return childWindow;
         }
 
+        /// <summary>
+        /// Get the Appstate Label based on the Appstate Text and Automation ID
+        /// </summary>
+        /// <param name="sText"></param>
+        /// <param name="sAutomationID"></param>
+        /// <returns></returns>
         public Label GetAppState(string sText, string sAutomationID = null)
         {
             if (sAutomationID == null)
@@ -136,19 +199,51 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
                 //return wVStoreMainWindow.Get<Label>(SearchCriteria.ByText(sText).AndAutomationId(sAutomationID));
             }
         }
-        
+
+        /// <summary>
+        /// Get the ListView based on the input window and Automation ID
+        /// </summary>
+        /// <param name="wWin"></param>
+        /// <param name="sAutomationID"></param>
+        /// <returns>ListView</returns>
         public ListView GetListView(Window wWin, string sAutomationID)
         {
+            //ListView listView = Panel.Get<ListView>(SearchCriteria.ByAutomationId(sAutomationID));
             ListView listView = wWin.Get<ListView>(SearchCriteria.ByAutomationId(sAutomationID));
             return listView;
         }
-        
+
+        /// <summary>
+        /// Get the ListView based on the input window and Automation ID & ListViewIndex
+        /// </summary>
+        /// <param name="wWin"></param>
+        /// <param name="sAutomationID"></param>
+        /// <param name="iIndex"></param>
+        /// <returns>ListView</returns>
+        public ListView GetListView(Window wWin, string sAutomationID, int iIndex)
+        {
+            ListView listView = wWin.Get<ListView>(SearchCriteria.ByAutomationId(sAutomationID).AndIndex(iIndex));
+            return listView;
+        }
+
+        /// <summary>
+        /// Get the Panel based on the passed Window and the Panel ID
+        /// </summary>
+        /// <param name="wWin"></param>
+        /// <param name="sAutomationID"></param>
+        /// <returns></returns>
         public Panel GetPanel(Window wWin, String sAutomationID)
         {
             Panel pane = wWin.Get<Panel>(SearchCriteria.ByAutomationId(sAutomationID));
             return pane;
         }
 
+        /// <summary>
+        /// Get the Tab on any window based of the passed Window and Panel ID
+        /// </summary>
+        /// <param name="wWin"></param>
+        /// <param name="sAutomationID"></param>
+        /// <returns>Panel</returns>
         public Tab GetTab(Window wWin, string sAutomationID)
         {
             Tab tabControl = wWin.Get<Tab>(SearchCriteria.ByAutomationId(sAutomationID));
@@ -336,7 +431,7 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
         //    _window.Click();
         //}
 
-        ///*public static Window GetWindow(string title)
+        //*public static Window GetWindow(string title)
         //{
         //    return Retry.For(
         //        () => _application.GetWindows().Find(x => x.Title.Contains(title)),

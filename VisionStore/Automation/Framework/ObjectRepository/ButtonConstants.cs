@@ -3,7 +3,6 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
 {
     public static class ButtonConstants
     {
-      
         //CustomerScreen - Elements
         public static string BTN_CUSTOMER = "btnCustomerSearch";
         public static string BTN_ADD_CUST = "fBtnAdd";
@@ -20,8 +19,6 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
         public static string BTN_PANEL_NEXT = "btnNext";
         public static string BTN_RESUME = "btn4";
         public static string BTN_APPLY = "fbtnApply";
-
-
     }
 }
 

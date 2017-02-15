@@ -26,7 +26,6 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
-
         public bool OpenCustomerWindow()  
         {
             Boolean bResults = false;
@@ -34,6 +33,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             {
                 ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CUSTOMER);
                 wVStoreMainWindow.WaitWhileBusy();
+                LoggerUtility.StatusInfo("Opening the Customer Window");
                 return wCustomerWin.Enabled;
             }
             catch (Exception Ex)
@@ -49,12 +49,13 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             try
             {
                 wCustomerWin.WaitWhileBusy();
-                ClickOnButton(wCustomerWin, ButtonConstants.BTN_CLOSE_CUSTOMERWIN);          
-                return true;
+                ClickOnButton(wCustomerWin, ButtonConstants.BTN_CLOSE_CUSTOMERWIN);
+                LoggerUtility.StatusInfo("Closed the Customer Window");
+                return bResults;
             }
             catch (Exception Ex)
             {
-                return bResults;
+                return (!bResults);
                 throw new AutomationException("Failed to Close the Customer Search Screen", Ex.StackTrace);
             }
         }
@@ -64,12 +65,14 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             Boolean bResults = false;
             try
             {
-                Assert.True(SearchCustomers(sCustomer));
+                Console.WriteLine("Searching thre customer with Name: " + sCustomer);
+                SearchCustomers(sCustomer);
                 Thread.Sleep(5000);
                 wCustomerWin.WaitWhileBusy();
                 ClickOnButton(wCustomerWin, "fBtnSetAsCustomer");
                 Thread.Sleep(CommonData.iLoadingTime);
-                return true;
+                LoggerUtility.StatusInfo("Selected The Customer With  Name: " + sCustomer); 
+                return (!bResults);
             }catch
             {
                 Console.WriteLine("Error: The Application Failed to Select the Customer");
@@ -80,31 +83,30 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         public bool SearchCustomers(string sCustomer)
         {
             Boolean bResults = false;
+            Thread.Sleep(1000);
 
             try
             {
-                if (wCustomerWin != null)
+                wCustomerWin.WaitWhileBusy();
+                SetTextByClassName(wCustomerWin, AppConstants.TXT_SEARCH_CLASSNAME, sCustomer);
+                ClickOnButton(GetButton(wCustomerWin, ButtonConstants.BTN_SEARCH_CUST));
+                wCustomerWin.WaitWhileBusy();
+                Thread.Sleep(5000);
+
+                Label SearchResults = GetLabel(wCustomerWin, AppConstants.LBL_SEARCH_RESULTS);
+                if (SearchResults.Text != "Displaying 1 of 1 Customer")
                 {
-                    SetTextByClassName(wCustomerWin, AppConstants.TXT_SEARCH_CLASSNAME, sCustomer);
-                    ClickOnButton(GetButton(wCustomerWin, ButtonConstants.BTN_SEARCH_CUST));
+                    GetListView(wCustomerWin, "dataGrid1").Row("First Name", "Paul").Select();
                     wCustomerWin.WaitWhileBusy();
-                    Thread.Sleep(7000);
-
-                    Label SearchResults = GetLabel(wCustomerWin, AppConstants.LBL_SEARCH_RESULTS);
-                    if (SearchResults.Text != "Displaying 1 of 1 Customer")
-                    {
-                        GetListView(wCustomerWin, "dataGrid1").Row("First Name", "Paul").Select();
-                        wCustomerWin.WaitWhileBusy();
-                    }
-
-                    bResults = this.IsCustomerSelected(sCustomer);
                 }
-                return bResults;
+                LoggerUtility.StatusInfo("Searching The Customer With Name : " +sCustomer);
+
+                return this.IsCustomerSelected(sCustomer);
             }
             catch (Exception Ex)
             {
                 return bResults;
-                throw new AutomationException("Failed to Load Customer Window: ", Ex.StackTrace);
+                throw new AutomationException("Failed to Search the Customer", Ex.StackTrace);
             } 
         }
 
@@ -198,7 +200,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         public bool VerifyNoCustomerIsSelected()
         {
             Label btmCustNamelabel = GetLabel(AppConstants.LBL_BTM_CUSTNAME);
-            LoggerUtility.WriteLog(btmCustNamelabel.Text);
+
             if (btmCustNamelabel.Text == "")
             {
                 return true;
@@ -223,12 +225,3 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         }
     }  
   }
-
-
-    
- 
-
-
-
-
-

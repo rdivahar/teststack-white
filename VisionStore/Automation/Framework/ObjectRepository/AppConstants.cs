@@ -24,14 +24,16 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
         //CUSTOMER WINDOW 
         public static string WIN_CUSTOMER_FORM = "FrmCustomer2"; // Has to changed to FrmCustomer3 
         public static string WIN_CUSTOMER_ADD = "FrmEditCustomer";
-        public static string TXT_SEARCH_CLASSNAME = "WindowsForms10.RichEdit20W.app.0.1a8c1fa_r14_ad1";
+        public static string TXT_SEARCH_CLASSNAME = "WindowsForms10.RichEdit20W.app.0.2eed1ca_r14_ad1"; // WindowsForms10.RichEdit20W.app.0.1a8c1fa_r14_ad1";
+        public static string TXT_SEARCH_CLASSNAME_Local = "WindowsForms10.RichEdit20W.app.0.1a8c1fa_r14_ad1";
+
         public static string LABEL_CUSTOMER_ID = "lblName";
         public static string TXT_FIRST_NAME = "First Name";
         public static string TXT_LAST_NAME = "Last Name";
         public static string LBL_SEARCH_RESULTS = "LblResultsCount";
         public static string TAB_CTRL_CUST_INFO = "TabControlDetails";
         public static string TBL_CUST_ONHOLD_TRANS = "dataGrid1";
-        public static int TAB_CUST_ONHOLD = 4;
+        public static int TAB_CUST_ONHOLD = 3;
 
         //RESUME TRANSACTIONS WINDOW
         public static string WIN_RESUME_TRANSACTIONS = "FrmResumeTransaction";
@@ -44,6 +46,9 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
 
         //DISTRIBUTION ORDER MANAGEMENT WINDOW
         public static string TITLE_DIST_ORDERMANAGEMENT = "FrmDistOrderMgmt";
+
+        //MERGE CUSTOMER WINDOW
+        public static string WIN_MERGE_TRANSACTIONS = "FrmResumeTransaction";
 
         //APPLICATION STATES
         public static string APPSTATE_LABEL_ID = "lblState";

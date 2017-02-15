@@ -36,6 +36,16 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
         public static string STATE_1415 = "[1415]";
         public static string STATE_1000 = "[1000]";
 
+
+        public enum AppStatus
+        {
+            State900 = 900,
+            State905 = 905,
+            State1415 = 1415, 
+            State9010 = 200,
+            State461 = 461
+        }
+
     }
 }
 

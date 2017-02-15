@@ -25,7 +25,7 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
                 btnToClick.Focus();
                 btnToClick.Click();
                 VStoreApp.WaitWhileBusy();
-                Thread.Sleep(CommonData.iLoadingTime);
+                Thread.Sleep(CommonData.iWinLoadingWait);
             }
             catch (Exception ex)
             {
@@ -54,10 +54,15 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             }
         }
 
+        /// <summary>
+        /// Verify the Application state based on the Expected App State
+        /// </summary>
+        /// <param name="sExpectedAppState"></param>
+        /// <returns>True Or False</returns>
         public bool VerifyAppState(string sExpectedAppState)
         {
            string sDefaultAutomationID = StateConstants.APPSTATE_LABEL_ID;
-           Thread.Sleep(CommonData.iWinLoadingWait);
+           Thread.Sleep(CommonData.iMinWait);
            wVStoreMainWindow.WaitWhileBusy();
            Label AppState = GetLabel(wVStoreMainWindow, sDefaultAutomationID);
            return (AppState.NameMatches(sExpectedAppState));    
@@ -78,6 +83,14 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             wVStoreMainWindow.Keyboard.PressSpecialKey(kSpecialKey);
             Thread.Sleep(CommonData.iMinWait);
             wVStoreMainWindow.WaitWhileBusy();
+        }
+
+        public void EnterFromKeyborad(Window wWin, String sInput)
+        {
+            wWin.WaitWhileBusy();
+            wWin.Keyboard.Enter(sInput);
+            Thread.Sleep(CommonData.iWinLoadingWait);
+            wWin.WaitWhileBusy();
         }
 
         public void SetText(Window wVStoreWin, string sAutomationID, string sTxtvalue)
@@ -104,10 +117,12 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
 
         public void SetTextByClassName(Window wVStoreWin, string sClassName, string sTxtvalue)
         {
+            Console.WriteLine("Going to Get teh Text Field");
             TextBox txtField = wVStoreWin.Get<TextBox>(SearchCriteria.ByClassName(sClassName));
             txtField.Focus();
             txtField.Enter(sTxtvalue);
             wVStoreWin.WaitWhileBusy();
+            Thread.Sleep(2000);
         }
 
         public void WaitForObjectExists(UIItem OBJToWait, int iWaitTime)
@@ -131,10 +146,5 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             wWin.WaitWhileBusy();
         }
 
-
-        //public bool GetItemFromGrid(String HeaderrValue, String ExpectedItem)
-        //{
-
-        //}
     }
 }
