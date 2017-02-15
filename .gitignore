@@ -1,2 +1,5 @@
 VisionStore/Automation/obj/Debug/
 VisionStore/Automation/bin/Debug/
+*.bat
+*.png
+*.Html
