@@ -217,17 +217,6 @@ namespace Jesta.Automation.VisionStore.Tests
             Assert.True(Trans.VoidSuspendedTransaction(sTransactionNumber), "Step: Void The Suspended Transaction");
         }
 
-
-        public void Test_Branching()
-        {
-
-        }
-
-        public void Test_Branching()
-        {
-
-        }
-
         [Test, Order(7)]
         public void Merge_Suspended_Transaction()
         {
