@@ -23,7 +23,8 @@ namespace Jesta.VStore.Automation.Framework.Configuration
         //Application Data
         public static string PROG_PATH = @"C:\VisionStore\VSClient\VisionStore.exe";
         public static string PROG_NAME = "VisionStore";
-        public static string Proj_Path = "C:\\Users\\qhe\\Documents\\Visual Studio 2015\\Projects\\VisionStore\\Automation\\";
+        public static string Proj_Path = "C:\\JestaPOSAutomation\\VisionStore\\Automation\\";
+        public static string screenshotDir = "C:\\JestaPOSAutomation\\VisionStore\\Automation\\Screenshots";
 
         //Employee Info 
         public static string EMP_ID = "8600";

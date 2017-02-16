@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jesta.VStore.Automation.Framework.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -16,10 +17,10 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
 
         private string TakeScreenshot1(string screenshotName)
         {
-            string screenshotDir = "C:\\Users\\qhe\\Documents\\Visual Studio 2015\\Projects\\VisionStore\\Automation\\Screenshots";
-            //string screenshotDir = "C:\\JestaDesktopAutomation\\VisionStore\\Automation\\Screenshots";//VM screenshot
+            
+           
             var imagename = screenshotName + ".png";
-            var imagePath = Path.Combine(screenshotDir, imagename);
+            var imagePath = Path.Combine(CommonData.screenshotDir, imagename);
             try
             {
                 Desktop.CaptureScreenshot().Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
@@ -27,7 +28,7 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             }
             catch (Exception)
             {
-                Trace.TraceError(String.Format("Failed to save screenshot to directory: {0}, filename: {1}", screenshotDir, imagePath));
+                Trace.TraceError(String.Format("Failed to save screenshot to directory: {0}, filename: {1}", CommonData.screenshotDir, imagePath));
             }
             return imagePath;
         }
@@ -40,21 +41,19 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
 
         public static void TakeScreenshot(string screenshotName)
         {
-           string screenshotDir = "C:\\Users\\qhe\\Documents\\Visual Studio 2015\\Projects\\VisionStore\\Automation\\Screenshots";
-           //string screenshotDir = "C:\\JestaDesktopAutomation\\VisionStore\\Automation\\Screenshots";//VM screenshot
+           
 
             var imagename = screenshotName + ".png";
-            var filename = Path.Combine(screenshotDir, imagename);
+            var filename = Path.Combine(CommonData.screenshotDir, imagename);
             var bitmap = CaptureScreenshot();
             bitmap.Save(filename);
         }
 
         public static string GetScreenshot(string ssName)
         {
-            string screenshotDir = "C:\\Users\\qhe\\Documents\\Visual Studio 2015\\Projects\\VisionStore\\Automation\\Screenshots";
-            //string screenshotDir = "C:\\JestaDesktopAutomation\\VisionStore\\Automation\\Screenshots";//VM screenshot
+            
             var imagename = ssName + ".png";
-            var filepath = Path.Combine(screenshotDir, imagename);
+            var filepath = Path.Combine(CommonData.screenshotDir, imagename);
 
             TakeScreenshot(ssName);
             return filepath;
