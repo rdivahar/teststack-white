@@ -36,7 +36,7 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
 
         //RESUME TRANSACTIONS WINDOW
         public static string WIN_RESUME_TRANSACTIONS = "FrmResumeTransaction";
-        public static string WIN_MERGE_TRANSACTIONS = "FrmResumeTransaction";
+        //public static string WIN_MERGE_TRANSACTIONS = "FrmResumeTransaction";
         public static string WIN_HOLD_TRANSEXPIRY = "FrmPromiseDate";
         public static string TAB_CTRL_RESUMETRANSACTIONS = "tbctrl_TransferPages";
         public static string HEADR_TRAN_NUM = "Tran No.";

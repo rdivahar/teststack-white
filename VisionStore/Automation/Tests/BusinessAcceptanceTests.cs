@@ -318,7 +318,7 @@ namespace Jesta.Automation.VisionStore.Tests
             int iAppState = Int32.Parse(OutputAppState);
             LoggerUtility.StatusInfo(OutputAppState);
 
-            if (Enum.IsDefined(typeof(AppStatus), iAppState));
+            if (Enum.IsDefined(typeof(AppStatus), iAppState))
             {
                 LoggerUtility.StatusInfo("Going To Click On F1/CANCEL Button");
                 PressSpecialKey(KeyboardInput.SpecialKeys.F1);

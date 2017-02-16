@@ -214,7 +214,7 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
         }
 
         /// <summary>
-        /// Get the ListView based on the input window and Automation ID & ListViewIndex
+        /// Get the ListView based on the input window and Automation ID and ListViewIndex
         /// </summary>
         /// <param name="wWin"></param>
         /// <param name="sAutomationID"></param>
