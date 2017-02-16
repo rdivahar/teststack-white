@@ -223,6 +223,11 @@ namespace Jesta.Automation.VisionStore.Tests
 
         }
 
+        public void Test_Branching()
+        {
+
+        }
+
         [Test, Order(7)]
         public void Merge_Suspended_Transaction()
         {
