@@ -330,19 +330,6 @@ namespace Jesta.Automation.VisionStore.Tests
         }
 
         [Test]
-        public void TestGitSourceTree()
-        {
-            testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            LoggerUtility.StartTest(testName);
-            Label AppState = GetLabel(wVStoreMainWindow, "lblState");
-            string CurrentAppState = AppState.Text;
-            string OutputAppState = CurrentAppState.Split('[', ']')[1];
-            int iAppState = Int32.Parse(OutputAppState);
-            LoggerUtility.StatusInfo(OutputAppState);
-        }
-
-
-        [Test]
         public void TestTheAppstate()
         {
             testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
