@@ -14,6 +14,7 @@ using TestStack.White.UIItems.WindowStripControls;
 using TestStack.White.UIItems.PropertyGridItems;
 using TestStack.White.WindowsAPI;
 using System.Threading;
+using System.Configuration;
 
 namespace Jesta.VStore.Automation.Framework.Configuration
 {
@@ -23,9 +24,9 @@ namespace Jesta.VStore.Automation.Framework.Configuration
         //Application Data
         public static string PROG_PATH = @"C:\VisionStore\VSClient\VisionStore.exe";
         public static string PROG_NAME = "VisionStore";
-        public static string Proj_Path = "C:\\JestaPOSAutomation\\VisionStore\\Automation\\";
-        public static string screenshotDir = "C:\\JestaPOSAutomation\\VisionStore\\Automation\\Screenshots";
-
+        public static string Proj_Path = ConfigurationManager.AppSettings["AUTOMATIONDIR"];
+        public static string screenshotDir = ConfigurationManager.AppSettings["SCREENSHOTDIR"];
+        
         //Employee Info 
         public static string EMP_ID = "8600";
         public static string EMP_PWD = "jestais";
