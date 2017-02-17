@@ -26,6 +26,7 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
         public static string STATE_130 = "[130]";
         public static string STATE_140 = "[140]";
         public static string STATE_200 = "[200]";
+        public static string STATE_460 = "[460]";
         public static string STATE_461 = "[461]";
         public static string STATE_900 = "[900]";
         public static string STATE_7000 = "[7000]";
