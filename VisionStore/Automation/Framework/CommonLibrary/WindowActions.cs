@@ -12,11 +12,37 @@ using TestStack.White.WindowsAPI;
 using Jesta.VStore.Automation.Framework.Configuration;
 using TestStack.White.UIItems.TabItems;
 using Jesta.VStore.Automation.Framework.ObjectRepository;
+using static Jesta.VStore.Automation.Framework.ObjectRepository.StateConstants;
 
 namespace Jesta.VStore.Automation.Framework.CommonLibrary
 {
     public class WindowActions : WindowBase 
-    {      
+    {
+
+        /// <summary>
+        /// Method to Trigger the VStore Application and Set the App to its Base State 
+        /// </summary>
+        public void InitializeAndSetToBaseState()
+        {
+            Init();
+
+            Label AppState = GetLabel(wVStoreMainWindow, "lblState");
+            string CurrentAppState = AppState.Text;
+
+            string OutputAppState = CurrentAppState.Split('[', ']')[1];
+            int iAppState = Int32.Parse(OutputAppState);
+
+            if (Enum.IsDefined(typeof(AppStatus200), iAppState))
+            {
+                VStoreApp.WaitWhileBusy();
+                Thread.Sleep(CommonData.iLoadingTime);
+                PressSpecialKey(KeyboardInput.SpecialKeys.F1);
+                wVStoreMainWindow.WaitTill(new Window.WaitTillDelegate(IsState200));
+                string NewAppState = AppState.Text;
+                string NewOutputAppState = NewAppState.Split('[', ']')[1];
+                int iNewAppState = Int32.Parse(NewOutputAppState);
+            }
+        }
 
         public void ClickOnButton(Button btnToClick)
         {
@@ -66,6 +92,24 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
            wVStoreMainWindow.WaitWhileBusy();
            Label AppState = GetLabel(wVStoreMainWindow, sDefaultAutomationID);
            return (AppState.NameMatches(sExpectedAppState));    
+        }
+
+
+        public bool VerifyAppStates(string sExpStateOne, string sExpStateTwo)
+        {
+            Boolean bResults = true;
+            if (VerifyAppState(sExpStateOne) || VerifyAppState(sExpStateTwo))
+            {
+                return bResults;
+            } else
+            {
+                return !bResults;
+            }
+        }
+
+        public bool IsState200()
+        {
+            return VerifyAppState(AppConstants.STATE_200);
         }
 
         public void PressEnter(Window wVStoreWin)
@@ -154,6 +198,5 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             tbCtrl.SelectTabPage(iTabIndex);
             wWin.WaitWhileBusy();
         }
-
     }
 }

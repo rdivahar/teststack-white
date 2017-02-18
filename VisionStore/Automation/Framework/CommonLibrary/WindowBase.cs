@@ -1,5 +1,4 @@
-﻿using Jesta.VStore.Automation.Framework.Configuration;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +12,10 @@ using TestStack.White.UIItems;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.TabItems;
 using TestStack.White.UIItems.WindowItems;
+using TestStack.White.WindowsAPI;
+using Jesta.VStore.Automation.Framework.Configuration;
+using Jesta.VStore.Automation.Framework.ObjectRepository;
+using Jesta.VStore.Automation.Framework.CommonLibrary;
 
 namespace Jesta.VStore.Automation.Framework.CommonLibrary
 {
@@ -42,12 +45,14 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             VStoreApp.WaitWhileBusy();
             Thread.Sleep(CommonData.iLoadingTime);
 
+            LoggerUtility.WriteLog("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             wVStoreMainWindow = VStoreApp.GetWindow(CommonData.PROG_NAME, InitializeOption.NoCache);
             VStoreApp.WaitWhileBusy();
+            
 
             if (wVStoreMainWindow.Title.ToString() == CommonData.PROG_NAME)
             {
-                LoggerUtility.WriteLog("The Application " + CommonData.PROG_NAME + " is Launched");
+                LoggerUtility.WriteLog("<Info: Launching the " + CommonData.PROG_NAME + " Application>");
                 VStoreApp.WaitWhileBusy();
             }
             else
@@ -56,6 +61,7 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             }
             Thread.Sleep(CommonData.iLoadingTime);
         }
+
 
         /// <summary>
         /// Base method to close the Vision Store Application 
@@ -186,7 +192,7 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
         {
             if (sAutomationID == null)
             {
-                string sDefaultID = "lblState";
+                //string sDefaultID = "lblState";
                 wVStoreMainWindow.WaitWhileBusy();
                 Thread.Sleep(2000);
                 //return wVStoreMainWindow.Get<Label>(SearchCriteria.ByText(sText).AndAutomationId(sDefaultID));

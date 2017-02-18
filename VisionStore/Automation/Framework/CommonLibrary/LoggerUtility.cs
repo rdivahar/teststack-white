@@ -49,7 +49,7 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             FileInfo logFileInfo;
 
             string logFilePath = "C:\\VStoreLogs\\";
-            logFilePath = logFilePath + "VSAutomation_TestLog-" + System.DateTime.Today.ToString("MM-dd-yyyy") + "." + "txt";
+            logFilePath = logFilePath + "VSAutomation_TestLog-" + System.DateTime.Today.ToString("MM-dd-yyyy") + "." + "log";
             logFileInfo = new FileInfo(logFilePath);
             logDirInfo = new DirectoryInfo(logFileInfo.DirectoryName);
             if (!logDirInfo.Exists) logDirInfo.Create();
@@ -92,18 +92,23 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
                 test.Log(LogStatus.Fail, "Error Screenshot Below: " + test.AddScreenCapture(ScreenshotPath));
             }
             extent.EndTest(test);
-            LoggerUtility.WriteLog("Closing the Vision Store Client");
+            LoggerUtility.WriteLog("<Info: Closing the Vision Store Application>");
+            LoggerUtility.WriteLog("<Info: Ending the Test : " +testName+">");
+            LoggerUtility.WriteLog("--------------------------------------------------------------");
+            LoggerUtility.WriteLog("");
         }
 
         public static void FlushResultsAndClose()
         {
             extent.Flush();
             extent.Close();
+            
         }
 
         public static void StartTest(string TestCaseName)
         {
             test = extent.StartTest(TestCaseName);
+            LoggerUtility.WriteLog("<Info: TESTCASE NAME - " + TestCaseName+">");
         }
 
         public static void StatusInfo(string InfoMessage)
