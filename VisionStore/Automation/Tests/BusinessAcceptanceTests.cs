@@ -75,8 +75,6 @@ namespace Jesta.Automation.VisionStore.Tests
 
             Assert.True(Trans.NoTransactionToTransaferMessage() || Trans.SelectTransactionToTransaferMessage());
             LoggerUtility.StatusPass("Verified Recover Transactions Functionality");
-
-            //ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);
         }
 
         [Test, Order(2)]
