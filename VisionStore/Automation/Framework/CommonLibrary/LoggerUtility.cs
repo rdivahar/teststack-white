@@ -66,9 +66,9 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             log.Close();
         }
 
-        public static void SetupReportConfig()
+        public static void SetupReportConfig(string sSuiteName)
         {
-            string ReportsPath = CommonData.Proj_Path + "Reports\\VisionStoreReport.Html";
+            string ReportsPath = CommonData.Proj_Path + "Reports\\"+sSuiteName+".Html";
             extent = new ExtentReports(ReportsPath, true);
             string Environment = ConfigurationManager.AppSettings["ENVIRONMENT"];
             string Configuration = ConfigurationManager.AppSettings["CONFIGURATION"];
@@ -111,15 +111,24 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             LoggerUtility.WriteLog("<Info: TESTCASE NAME - " + TestCaseName+">");
         }
 
-        public static void StatusInfo(string InfoMessage)
+        public static void StatusInfo(string sInfoMessage)
         {
-            test.Log(LogStatus.Info, InfoMessage);
+            test.Log(LogStatus.Info, sInfoMessage);
         }
 
-        public static void StatusPass(string PassMessage)
+        public static void StatusPass(string sPassMessage)
         {
-            test.Log(LogStatus.Pass, PassMessage);
+            test.Log(LogStatus.Pass, sPassMessage);
         }
 
+        public static void StatusFail(string sFailureMessage)
+        {
+            test.Log(LogStatus.Fail, sFailureMessage);
+        }
+
+        public static void StatusWarning(string sWarningMessage)
+        {
+            test.Log(LogStatus.Warning, sWarningMessage);
+        }
     }
 }

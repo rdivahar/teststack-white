@@ -13,6 +13,7 @@ using Jesta.VStore.Automation.Framework.Configuration;
 using TestStack.White.UIItems.TabItems;
 using Jesta.VStore.Automation.Framework.ObjectRepository;
 using static Jesta.VStore.Automation.Framework.ObjectRepository.StateConstants;
+using TestStack.White.UIItems.ListViewItems;
 
 namespace Jesta.VStore.Automation.Framework.CommonLibrary
 {
@@ -42,6 +43,29 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
                 string NewOutputAppState = NewAppState.Split('[', ']')[1];
                 int iNewAppState = Int32.Parse(NewOutputAppState);
             }
+        }
+
+        public void CloseVStoreAndChildWindows()
+        {
+            //CloseAllChildWindows();
+            base.AppExit();
+        }
+
+        public void CloseAllChildWindows()
+        {
+            LoggerUtility.WriteLog("<Info: Closing The Child Windows Method>");
+            List<Window> wChildWindows = wVStoreMainWindow.ModalWindows();
+            LoggerUtility.WriteLog("dsda"+wChildWindows);
+
+            if (wChildWindows != null)
+                LoggerUtility.WriteLog("The Value is Not Equal To Null"+ wChildWindows);
+            {
+                foreach (Window ChildWindow in wChildWindows)
+                {
+                    LoggerUtility.WriteLog("The Current Child Window Is " + ChildWindow.Title);
+                    ChildWindow.Close();
+                }
+            } 
         }
 
         public void ClickOnButton(Button btnToClick)
@@ -93,7 +117,6 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
            Label AppState = GetLabel(wVStoreMainWindow, sDefaultAutomationID);
            return (AppState.NameMatches(sExpectedAppState));    
         }
-
 
         public bool VerifyAppStates(string sExpStateOne, string sExpStateTwo)
         {
@@ -151,6 +174,13 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             return sContent;
         }
 
+        public void SetTextByElement(TextBox tbxFieldName, string sTxtvalue)
+        {
+            tbxFieldName.Focus();
+            tbxFieldName.Enter(sTxtvalue);
+            VStoreApp.WaitWhileBusy();
+        }
+
         public void SetTextByElementName(Window wVStoreWin, string sElementName, string sTxtvalue)
         {
             TextBox txtField = wVStoreWin.Get<TextBox>(SearchCriteria.ByText(sElementName));
@@ -190,6 +220,20 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
                 }
                 else continue;
             }
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="wWin"></param>
+        /// <param name="sTableID"></param>
+        /// <param name="sExpValue"></param>
+        /// <returns></returns>
+        public bool IsDataGridHeaderContains(Window wWin, string sTableID, string sExpValue)
+        {
+            ListViewHeader LVHeader = GetListView(wWin, sTableID).Header;
+            bool bResult = LVHeader.Column(sExpValue).Enabled;
+            return bResult;
         }
 
         public void SelectTabItem(Window wWin, String sTabAutomationID, int iTabIndex)

@@ -1,30 +1,22 @@
 ﻿using Jesta.VStore.Automation.Framework.Configuration;
 using Jesta.VStore.Automation.Framework.ObjectRepository;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestStack.White;
 using System.Diagnostics;
 using System.Threading;
-using TestStack.White.UIItems.WindowItems;
-using TestStack.White.WindowsAPI;
-using TestStack.White.Factory;
-using TestStack.White.UIItems.PropertyGridItems;
-using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems;
-using TestStack.White.UIItems.WPFUIItems;
-using System.Windows.Automation;
-using NUnit.Framework;
 using System;
 using System.Runtime.CompilerServices;
+using RelevantCodes.ExtentReports;
+using System.Xml.Linq;
 
 namespace Jesta.VStore.Automation.Framework.CommonLibrary
-    {
+{
     public class CommonUtility : WindowActions
     {
         WindowBase wBase = new WindowBase();
         WindowActions wAction = new WindowActions();
+        public ExtentReports extent;
+        public ExtentTest test;
 
         /// <summary>
         /// Open the terminal and validate the Application States
@@ -40,7 +32,7 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
                 VerifyAppState(StateConstants.STATE_130);
                 ClickOnButton(ButtonConstants.BTN_OPENTERMINAL);
                 VerifyAppState(StateConstants.STATE_140);
-                Console.WriteLine("Info: Opening the Terminal");
+                Console.WriteLine("<Info: Opening the Terminal>");
                 return (!bResults);
             }
             catch (Exception Ex)
@@ -88,6 +80,10 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             return System.Reflection.MethodBase.GetCurrentMethod().Name;
         }
 
+        /// <summary>
+        /// Method to get the AppState Value as an Integer in between the Braces []
+        /// </summary>
+        /// <returns></returns>
         public int tet()
         {
             Label AppState = GetLabel(wVStoreMainWindow, AppConstants.APPSTATE_LABEL_ID);
@@ -95,6 +91,22 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             int iAppStateValue = Int32.Parse(sCurrentAppState);
             LoggerUtility.StatusInfo("The State Of The Application Is"+ iAppStateValue+"");
             return iAppStateValue;
+        }
+
+        public void ChangeXMLNodeValue(string sFilePath, string sRootElement,string sTargetElement, string sNodeValue )
+        {
+            
+            XDocument xDoc = XDocument.Load(sFilePath);
+            var element = xDoc.Root.Element(sRootElement).Element(sTargetElement);
+            element.Value = sNodeValue;
+            xDoc.Save(sFilePath);
+        }
+
+        public void ConfigXMLWithTestSuiteName(string sNodeValue)
+        {
+            string ConfigXMLPath = "C:\\JestaDesktopAutomation\\VisionStore\\Automation\\extent-config.xml";
+            string sAppendNodeValue = "--" + sNodeValue.ToUpper();
+            this.ChangeXMLNodeValue(ConfigXMLPath,"configuration", "reportHeadline", sAppendNodeValue);
         }
 
         public bool VerifyAppStateAndLabel(string sAppStateText, string sIdentificationLabel)

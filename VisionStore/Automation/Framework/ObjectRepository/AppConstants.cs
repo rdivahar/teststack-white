@@ -22,7 +22,7 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
         public static string LBL_TRANS_NUM = "lblTrans";
 
         //CUSTOMER WINDOW 
-        public static string WIN_CUSTOMER_FORM = "FrmCustomer3"; // FrmCustomer3 or FrmCustomer2 my change
+        public static string WIN_CUSTOMER_FORM = "FrmCustomer3"; 
         public static string WIN_CUSTOMER_ADD = "FrmEditCustomer";
         public static string TXT_SEARCH_CLASSNAME = "WindowsForms10.RichEdit20W.app.0.1a8c1fa_r14_ad1";
         public static string TXT_SEARCH_ID = "tb_internal_labelled_txtBoxSearch";
@@ -32,11 +32,18 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
         public static string LBL_SEARCH_RESULTS = "LblResultsCount";
         public static string TAB_CTRL_CUST_INFO = "TabControlDetails";
         public static string TBL_CUST_ONHOLD_TRANS = "dataGrid1";
+        public static string TBL_CUST_DETAILS = "dataGrid1";
         public static int TAB_CUST_ONHOLD = 3;
-
+        public static string LBL_RESULTSCOUNT = "LblResultsCount";
+        public static string LBL_TITLE_FNAME = "First Name";
+        public static string LBL_TITLE_LNAME = "Last Name";
+        public static string LBL_TITLE_PHONE = "Phone";
+        public static string LBL_TITLE_EMAIL = "Email";
+        public static string LBL_CUSTCOUNT_ZERO = "Displaying 0 of 1 Customer";
+        public static string LBL_CUSTCOUNT_ONE = "Displaying 1 of 1 Customer";
+        
         //RESUME TRANSACTIONS WINDOW
         public static string WIN_RESUME_TRANSACTIONS = "FrmResumeTransaction";
-        //public static string WIN_MERGE_TRANSACTIONS = "FrmResumeTransaction";
         public static string WIN_HOLD_TRANSEXPIRY = "FrmPromiseDate";
         public static string TAB_CTRL_RESUMETRANSACTIONS = "tbctrl_TransferPages";
         public static string HEADR_TRAN_NUM = "Tran No.";

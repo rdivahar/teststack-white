@@ -16,6 +16,7 @@ using TestStack.White.WindowsAPI;
 using Jesta.VStore.Automation.Framework.Configuration;
 using Jesta.VStore.Automation.Framework.ObjectRepository;
 using Jesta.VStore.Automation.Framework.CommonLibrary;
+using Jesta.VStore.Automation.Framework.AppLibrary;
 
 namespace Jesta.VStore.Automation.Framework.CommonLibrary
 {
@@ -48,7 +49,6 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             LoggerUtility.WriteLog("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             wVStoreMainWindow = VStoreApp.GetWindow(CommonData.PROG_NAME, InitializeOption.NoCache);
             VStoreApp.WaitWhileBusy();
-            
 
             if (wVStoreMainWindow.Title.ToString() == CommonData.PROG_NAME)
             {
@@ -57,32 +57,34 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
             }
             else
             {
-                Assert.Fail("Application Error:" + CommonData.PROG_NAME + "failed to Launch");
+                Assert.Fail("Application Error:" + CommonData.PROG_NAME + "Failed to Launch");
             }
             Thread.Sleep(CommonData.iLoadingTime);
         }
 
-
         /// <summary>
         /// Base method to close the Vision Store Application 
         /// </summary>
-        public void Exit()
+        public void AppExit()
         {
-            if (VStoreApp != null)
+            try
             {
-                VStoreApp.Kill();
+                if (VStoreApp != null)
+                {
+                    VStoreApp.Kill();
+                }
+                else if (wVStoreMainWindow != null && wVStoreMainWindow.Visible.Equals(true))
+                {
+                    wVStoreMainWindow.Focus();
+                    wVStoreMainWindow.Close();
+                    wVStoreMainWindow.WaitWhileBusy();
+                }
             }
-            else if (wVStoreMainWindow != null && wVStoreMainWindow.Visible.Equals(true))
-            {
-                wVStoreMainWindow.Focus();
-                wVStoreMainWindow.Close();
-                wVStoreMainWindow.WaitWhileBusy();
-            }
-            else
+            catch (Exception Ex)
             {
                 LoggerUtility.WriteLog("Application Error" + CommonData.PROG_NAME + " Not Found / Cannot Be Closed");
+                throw ;
             }
-
             Thread.Sleep(5000);
         }
 
@@ -109,7 +111,7 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
         }
 
         /// <summary>
-        /// Get the Label on the MainWin based on the Button ID
+        /// Get the Label on the MainWin based on the Button Automation ID
         /// </summary>
         /// <param name="sAutomationID">Automation ID of the Label</param>
         /// <returns>Label</returns>
@@ -159,15 +161,27 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
         }
 
         /// <summary>
+        /// Get the TextBox based on the input Window and TextBox Automation ID
+        /// </summary>
+        /// <param name="wWin"></param>
+        /// <param name="sAutomationID"></param>
+        /// <returns>TextBox</returns>
+        public TextBox GetTextBox(Window wWin, string sAutomationID)
+        {
+            wWin.WaitWhileBusy();
+            return wWin.Get<TextBox>(SearchCriteria.ByAutomationId(sAutomationID));
+        }
+
+        /// <summary>
         /// Get the TextBox based on the input Window and TextBox ClassName
         /// </summary>
-        /// <param name="wVStoreWin"></param>
+        /// <param name="wWin"></param>
         /// <param name="sClassName"></param>
         /// <returns>TextBox</returns>
-        public TextBox GetTextBox(Window wVStoreWin, string sClassName)
+        public TextBox GetTextBoxByClassName(Window wWin, string sClassName)
         {
-            wVStoreWin.WaitWhileBusy();
-            return wVStoreWin.Get<TextBox>(SearchCriteria.ByClassName(sClassName));
+            wWin.WaitWhileBusy();
+            return wWin.Get<TextBox>(SearchCriteria.ByClassName(sClassName));
         }
 
         /// <summary>

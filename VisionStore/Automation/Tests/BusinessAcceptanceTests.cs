@@ -1,66 +1,34 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using TestStack.White.UIItems;
-using TestStack.White.UIItems.PropertyGridItems;
-using Jesta.VStore.Automation.Framework;
-using System.Diagnostics;
-using TestStack.White.UIItems.WindowItems;
 using Jesta.VStore.Automation.Framework.CommonLibrary;
 using Jesta.VStore.Automation.Framework.AppLibrary;
 using Jesta.VStore.Automation.Framework.Configuration;
 using Jesta.VStore.Automation.Framework.ObjectRepository;
-using TestStack.White.WindowsAPI;
-using TestStack.White.UIItems.Finders;
-using TestStack.White.UIItems.TabItems;
-using RelevantCodes.ExtentReports;
-using NUnit.Framework.Interfaces;
-using static Jesta.VStore.Automation.Framework.ObjectRepository.StateConstants;
 
 namespace Jesta.Automation.VisionStore.Tests
 {
-    [TestFixture]
+    [TestFixture(Category = "Bats")]
     public class BusinessAcceptanceTests : CommonUtility
     {
         Transactions Trans = new Transactions();
         Employee Emp = new Employee();
         Customer Cust = new Customer();
-        public ExtentReports extent;
-        public ExtentTest test;
         string testName;
-
-        [OneTimeSetUp]
-        public void BatsSetUp()
-        {
-            LoggerUtility.SetupReportConfig();
-        }
-
-        [OneTimeTearDown]
-        public void BatsTearDown()
-        {
-            LoggerUtility.FlushResultsAndClose();
-        }
 
         [SetUp]
         public void LaunchApp()
         {
-            Init();
-            LoggerUtility.WriteLog("Launching the Vision Store Client");
+            InitializeAndSetToBaseState(); 
         }
 
         [TearDown]
         public void LogResultAndCloseApp()
         {
             LoggerUtility.GenerateReport(testName);
-            Exit();
+            AppExit();
         }
 
-        [Test, Order(1)]
+        [Test]
         public void Recover_Transactions()
         {
             testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
@@ -68,17 +36,15 @@ namespace Jesta.Automation.VisionStore.Tests
      
             Trans.SelectRecoverTransactions();
             Emp.AuthenticateEmployee(CommonData.EMP_ID, CommonData.EMP_PWD);
-           
-            Assert.True(VerifyAppState(StateConstants.STATE_461), "Appstate Transition to State 461");
+          
+            Assert.True(VerifyAppStates(StateConstants.STATE_461, StateConstants.STATE_460), "Appstate Transition to State 460/461");
             LoggerUtility.StatusPass("Verified AppState Transition Functionality");
 
             Assert.True(Trans.NoTransactionToTransaferMessage(), "No Transactions To Transfer Message Existance");
             LoggerUtility.StatusPass("Verified Recover Transactions Functionality");
-
-            //ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);
         }
 
-        [Test, Order(2)]
+        [Test]
         public void Transaction_WithCash_WithOutCustomer()
         {
             testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
@@ -100,7 +66,7 @@ namespace Jesta.Automation.VisionStore.Tests
             Trans.PrintReceipt("Print");
         }
 
-        [Test, Order(3)]
+        [Test]
         public void Transaction_WithCash_WithCustomer()
         {           
                 testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
@@ -118,7 +84,7 @@ namespace Jesta.Automation.VisionStore.Tests
                 LoggerUtility.StatusPass("Scanned and Tendered The Transaction WithCash and WithCustomer");
         }
 
-        [Test, Order(4)]
+        [Test]
         public void Transaction_Suspend_NoCustomer()
         {
             testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
@@ -155,7 +121,7 @@ namespace Jesta.Automation.VisionStore.Tests
             Assert.True(Trans.VoidSuspendedTransaction(sTransactionNumber));
         }
 
-       [Test, Order(5)]
+        [Test]
         public void Transaction_Suspend_WithCustomer()
         {
             testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
@@ -182,7 +148,7 @@ namespace Jesta.Automation.VisionStore.Tests
             Assert.True(Trans.VoidSuspendedTransaction(sTransactionNumber), "Void The Suspended Transaction");
         }
 
-        [Test, Order(6)]
+        [Test]
         public void Transaction_Hold_WithCustomer()
         {
             testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
@@ -217,7 +183,7 @@ namespace Jesta.Automation.VisionStore.Tests
             Assert.True(Trans.VoidSuspendedTransaction(sTransactionNumber), "Step: Void The Suspended Transaction");
         }
 
-        [Test, Order(7)]
+        [Test]
         public void Merge_Suspended_Transaction()
         {
 
@@ -262,7 +228,7 @@ namespace Jesta.Automation.VisionStore.Tests
             Trans.TenderTransactionWithCash();
         }
 
-        [Test, Order(8)]
+        [Test]
         public void Merge_Hold_Transaction()
         {
             testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
@@ -303,43 +269,5 @@ namespace Jesta.Automation.VisionStore.Tests
             Trans.SelectCorrespondingTransaction(sTransactionNumber);
             Trans.TenderTransactionWithCash();
         }
-
-        [Test]
-        public void SetAppToBaseState()
-        {
-       
-            testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            LoggerUtility.StartTest(testName);
-
-            Label AppState = GetLabel(wVStoreMainWindow, "lblState");
-            string CurrentAppState = AppState.Text;
-
-            string OutputAppState = CurrentAppState.Split('[', ']')[1];
-            int iAppState = Int32.Parse(OutputAppState);
-            LoggerUtility.StatusInfo(OutputAppState);
-
-            if (Enum.IsDefined(typeof(AppStatus), iAppState))
-            {
-                LoggerUtility.StatusInfo("Going To Click On F1/CANCEL Button");
-                PressSpecialKey(KeyboardInput.SpecialKeys.F1);
-                string NewAppState = AppState.Text;
-                string NewOutputAppState = NewAppState.Split('[', ']')[1];
-                int iNewAppState = Int32.Parse(NewOutputAppState);
-                LoggerUtility.StatusInfo("The New AppState Is "+iNewAppState);
-            }
-        }
-
-        [Test]
-        public void TestTheAppstate()
-        {
-            testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            LoggerUtility.StartTest(testName);
-            Label AppState = GetLabel(wVStoreMainWindow, "lblState");
-            string CurrentAppState = AppState.Text;
-            string OutputAppState = CurrentAppState.Split('[', ']')[1];
-            int iAppState = Int32.Parse(OutputAppState);
-            LoggerUtility.StatusInfo(OutputAppState);
-        }
     }
 }
-
