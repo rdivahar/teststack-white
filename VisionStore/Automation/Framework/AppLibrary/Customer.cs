@@ -9,20 +9,57 @@ using TestStack.White.UIItems.PropertyGridItems;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.WPFUIItems;
-using NUnit.Framework;
-using static TestStack.White.UIItems.WindowItems.Window;
-using TestStack.White.UIItems.TabItems;
+using System.Collections.Generic;
 
 namespace Jesta.VStore.Automation.Framework.AppLibrary
-    {
+{
     public class Customer : WindowActions
     {
-
         public Window wCustomerWin
         {
             get
             {
                 return GetChildWindowByID(wVStoreMainWindow, AppConstants.WIN_CUSTOMER_FORM);
+            }
+        }
+
+        public Button btnAddCustomer
+        {
+            get
+            {
+                return GetButton(ButtonConstants.BTN_ADD_CUST);
+            }
+        }
+
+        public Button btnSearchCustomer
+        {
+            get
+            {
+                return GetButton(wCustomerWin,ButtonConstants.BTN_SEARCH_CUST);
+            }
+        }
+
+        public TextBox tbxSearchCustomer
+        {
+            get
+            {
+                return GetTextBox(wCustomerWin,AppConstants.TXT_SEARCH_ID);
+            }
+        }
+
+        public Label lblSearchResults
+        {
+            get
+            {
+                return GetLabel(wCustomerWin, AppConstants.LBL_SEARCH_RESULTS);
+            }
+        }
+
+        public ListView tblCustomerList
+        {
+            get
+            {
+                return GetListView(wCustomerWin, AppConstants.TBL_CUST_DETAILS,0);
             }
         }
 
@@ -73,9 +110,13 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
                 Thread.Sleep(CommonData.iLoadingTime);
                 LoggerUtility.StatusInfo("Selected The Customer With  Name: " + sCustomer); 
                 return (!bResults);
-            }catch
+            }catch (Exception Ex)
             {
-                Console.WriteLine("Error: The Application Failed to Select the Customer");
+                if (wCustomerWin.Enabled)
+                {
+                    CloseCustomerWindow();
+                }
+                Console.WriteLine("Error: The Application Failed to Select the Customer" + Ex.StackTrace);
                 return bResults;
             }
         }
@@ -105,31 +146,94 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
             catch (Exception Ex)
             {
+                if (wCustomerWin.Enabled)
+                {
+                    CloseCustomerWindow();
+                }
                 return bResults;
                 throw new AutomationException("Failed to Search the Customer", Ex.StackTrace);
             } 
         }
 
-        public bool SelectCustomerTest(string sCustomer)
+        public bool SearchCustomerAndSelect(string sPhoneOrEmail)
         {
-            Boolean bResults = false;
+            bool bResults = false;
+            ListViewRow lstViewRow;
+            string sFirstName;
+            string sLastName;
+            string sCustomerName;
+            string sResultsCount;
+
             try
             {
-                this.OpenCustomerWindow();
+                SetTextByElement(tbxSearchCustomer, sPhoneOrEmail);
+                ClickOnButton(btnSearchCustomer);
 
-                TextBox txtSearchBox = GetTextBox(wCustomerWin, AppConstants.TXT_SEARCH_CLASSNAME);
-                txtSearchBox.Enter(CommonData.sCutomerName);
-
-                ClickOnButton(GetButton(wCustomerWin, ButtonConstants.BTN_SEARCH_CUST));
+                ListView lstCustomerTable = wCustomerWin.Get<ListView>(SearchCriteria.ByAutomationId("dataGrid1"));
                 Thread.Sleep(CommonData.iLoadingTime);
                 wCustomerWin.WaitWhileBusy();
+                sResultsCount = lblSearchResults.Text;
+                
 
-                Label SearchResults = GetLabel(wCustomerWin, AppConstants.LBL_SEARCH_RESULTS); 
-
-                if (SearchResults.Text != "Displaying 1 of 1 Customer")
+                if (sResultsCount != AppConstants.LBL_CUSTCOUNT_ZERO && sResultsCount != AppConstants.LBL_CUSTCOUNT_ONE)
+                { 
+                    if (sPhoneOrEmail.Contains("@") && sPhoneOrEmail.Contains("."))
+                    {
+                        lstViewRow = lstCustomerTable.Row(AppConstants.LBL_TITLE_EMAIL, sPhoneOrEmail);
+                        lstViewRow.Select();
+                        LoggerUtility.WriteLog("Selected Based On Email#");
+                    }
+                    else
+                    {
+                        lstViewRow = lstCustomerTable.Row(AppConstants.LBL_TITLE_PHONE, sPhoneOrEmail);
+                        lstViewRow.Select();
+                        LoggerUtility.WriteLog("Selected Based On Phone#");
+                    }
+                    sFirstName = lstViewRow.Cells[AppConstants.LBL_TITLE_FNAME].Text;
+                    sLastName = lstViewRow.Cells[AppConstants.LBL_TITLE_LNAME].Name;
+                }else 
                 {
-                    ListView lstCustomerTable = wCustomerWin.Get<ListView>(SearchCriteria.ByAutomationId("dataGrid1"));
-                    lstCustomerTable.Row("First Name", "Summer").Select();
+                    sFirstName = lstCustomerTable.Rows[0].Cells[AppConstants.LBL_TITLE_FNAME].Text;
+                    sLastName = lstCustomerTable.Rows[0].Cells[AppConstants.LBL_TITLE_LNAME].Text;
+                }
+
+                sCustomerName = sFirstName + " " + sLastName;
+                wCustomerWin.WaitWhileBusy();
+                LoggerUtility.StatusInfo("Searched The Client BasedOn = "+sPhoneOrEmail);
+
+                return bResults = IsCustomerSelected(sCustomerName);
+            }
+            catch (Exception Ex)
+            {
+                //CloseAllChildWindows();
+                if (wCustomerWin.Enabled)
+                { 
+                CloseCustomerWindow();
+                }
+                return bResults;
+                throw new AutomationException("Failed to Load Customer Window: ", Ex.StackTrace);
+            }
+        }
+
+        public bool SearchCustomerAndSelect(string sFirstName, string sLastName)
+        {
+            string sCustomer = sFirstName + " " + sLastName;
+            string sResultsCount;
+            bool bResults = false;
+
+            try
+            {
+                SetTextByElement(tbxSearchCustomer, sCustomer);
+                ClickOnButton(btnSearchCustomer);
+
+                Thread.Sleep(CommonData.iLoadingTime);
+                wCustomerWin.WaitWhileBusy();
+                sResultsCount = lblSearchResults.Text;
+
+                if (sResultsCount != AppConstants.LBL_CUSTCOUNT_ZERO && sResultsCount != AppConstants.LBL_CUSTCOUNT_ONE)
+                {
+                    ListView lstCustomerTable = wCustomerWin.Get<ListView>(SearchCriteria.ByAutomationId(AppConstants.TBL_CUST_DETAILS));
+                    lstCustomerTable.Row("First Name", sFirstName).Select();
                     wCustomerWin.WaitWhileBusy();
                 } 
                     return bResults = IsCustomerSelected(sCustomer);
@@ -137,11 +241,11 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             catch (Exception Ex)
             {
                 return bResults;
-                throw new AutomationException("Failed to Load Customer Window: ",Ex.StackTrace);
+                throw new AutomationException("Failed to Search & Select The Customer : "+ sCustomer, Ex.StackTrace);
             }
         }
 
-        public bool AddCustomer()
+        public bool AddNewCustomer()
         {
             Boolean bResults = false;
             try
@@ -208,6 +312,35 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Checks The TableHeader In The Customer Form Window For a Column Name 
+        /// </summary>
+        /// <param name="sTableID"></param>
+        /// <param name="sExpValue"></param>
+        /// <returns></returns>
+        public bool IsTableHeaderContains(string sTableID, string sExpValue)
+        {
+            bool bResult;
+            bResult = IsDataGridHeaderContains(wCustomerWin, sTableID, sExpValue);
+            return bResult;
+        }
+
+        public string GetNumberOfCustomersInApp()
+        {
+            string[] sValues;
+            string sCountInApp;
+
+            sValues = (GetLabel(wCustomerWin, AppConstants.LBL_RESULTSCOUNT).Name).Split(' ');
+            return sCountInApp = sValues[0];
+        }
+
+        public bool IsCustomersCountInDBEquals(string sCustCountInApp)
+        {
+            //bool bResult;
+            //bResult = 
+            return true;
         }
 
         public bool SelectFromCustomerInfoTab(int iCustTabPageIndex)
