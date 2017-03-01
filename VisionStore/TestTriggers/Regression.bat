@@ -1,0 +1,1 @@
+C:\JestaDesktopAutomation\VisionStore\Packages\NUnit.ConsoleRunner.3.5.0\tools\nunit3-console.exe C:\JestaDesktopAutomation\VisionStore\Automation\bin\Debug\VStoreAutomation.dll --where "cat == RegressionTests" --params=Suite=Regression
