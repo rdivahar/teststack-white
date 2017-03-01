@@ -5,3 +5,4 @@ VisionStore/Automation/bin/Debug/
 *.Html
 VisionStore/.vs/VStoreAutomation/v14/.suo
 *.TMP
+TestResult.xml
