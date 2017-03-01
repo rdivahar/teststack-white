@@ -36,11 +36,12 @@ namespace Jesta.Automation.VisionStore.Tests
      
             Trans.SelectRecoverTransactions();
             Emp.AuthenticateEmployee(CommonData.EMP_ID, CommonData.EMP_PWD);
-          
-            Assert.True(VerifyAppStates(StateConstants.STATE_461, StateConstants.STATE_460), "Appstate Transition to State 460/461");
+
+            Assert.True(VerifyAppState(StateConstants.STATE_460) || VerifyAppState(StateConstants.STATE_461));
             LoggerUtility.StatusPass("Verified AppState Transition Functionality");
 
-            Assert.True(Trans.NoTransactionToTransaferMessage(), "No Transactions To Transfer Message Existance");
+
+            Assert.True(Trans.NoTransactionToTransaferMessage() || Trans.SelectTransactionToTransaferMessage());
             LoggerUtility.StatusPass("Verified Recover Transactions Functionality");
         }
 

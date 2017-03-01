@@ -223,6 +223,17 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             return bNoTransMessage;
         }
 
+        public bool SelectTransactionToTransaferMessage()
+        {
+            Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
+            bool bSelectTransMessage = (majorPromptLabel.NameMatches("Select the terminal to transfer from."));
+
+            //wVStoreMainWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F1);
+            ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);//PressSpecialKey(KeyboardInput.SpecialKeys.F1);
+            wVStoreMainWindow.WaitWhileBusy();
+            return bSelectTransMessage;
+        }
+
         /// <summary>
         /// Tender the transaction based on the passed Tender Type and the Tender Amount (Optional)
         /// </summary>
