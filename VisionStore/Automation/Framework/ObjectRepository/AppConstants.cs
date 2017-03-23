@@ -8,6 +8,8 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
    
         //POS MAIN WINDOW    
         public static string ENTER_EMPNMBR_PROMPT = "What is your Employee Number?";
+        public static string NO_TRANS_PROMPT = "There are no transactions to transfer.";
+        public static string SELCT_TRANS_PROMPT = "Select the terminal to transfer from.";
         public static string ENTER_EMPPWD_PROMPT = "What is your Password?";
         public static string SALES_ADVISOR_LABEL = "Who is the sales advisor?";
         public static string SCAN_BARCODE_LABEL = "Scan a barcode ...";

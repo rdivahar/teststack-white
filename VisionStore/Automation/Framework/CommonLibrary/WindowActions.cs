@@ -105,6 +105,20 @@ namespace Jesta.VStore.Automation.Framework.CommonLibrary
         }
 
         /// <summary>
+        /// Checks the Major Prompt Messages based on the input string
+        /// </summary>
+        /// <param name="sPrmpt">Major Prompt Messages</param>
+        /// <returns>Boolean</returns>
+        public bool VerifyMajorPrmptMsgs(string sPrmpt)
+        {
+            Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
+            bool bNoTransMessage = (majorPromptLabel.NameMatches(sPrmpt));
+            wVStoreMainWindow.WaitWhileBusy();
+            return bNoTransMessage;
+        }
+
+
+        /// <summary>
         /// Verify the Application state based on the Expected App State
         /// </summary>
         /// <param name="sExpectedAppState"></param>

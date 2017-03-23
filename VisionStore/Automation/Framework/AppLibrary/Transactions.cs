@@ -212,13 +212,24 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             }
         }
 
+        /// <summary>
+        /// Verify Resume Transaction Messages
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckRecoverTransMsgs(string sMessageOne, string sMessageTwo)
+        {
+            bool bResult;
+            bResult = (VerifyMajorPrmptMsgs(sMessageOne) || VerifyMajorPrmptMsgs(sMessageTwo));
+            ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);
+            return bResult;
+        }
+
         public bool NoTransactionToTransaferMessage()
         {
             Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
             bool bNoTransMessage = (majorPromptLabel.NameMatches("There are no transactions to transfer."));
-
             //wVStoreMainWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F1);
-            ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);//PressSpecialKey(KeyboardInput.SpecialKeys.F1);
+            //ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);//PressSpecialKey(KeyboardInput.SpecialKeys.F1);
             wVStoreMainWindow.WaitWhileBusy();
             return bNoTransMessage;
         }
@@ -227,9 +238,8 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         {
             Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
             bool bSelectTransMessage = (majorPromptLabel.NameMatches("Select the terminal to transfer from."));
-
             //wVStoreMainWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F1);
-            ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);//PressSpecialKey(KeyboardInput.SpecialKeys.F1);
+            //ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);//PressSpecialKey(KeyboardInput.SpecialKeys.F1);
             wVStoreMainWindow.WaitWhileBusy();
             return bSelectTransMessage;
         }

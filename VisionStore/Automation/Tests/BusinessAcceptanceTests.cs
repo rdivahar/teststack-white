@@ -33,21 +33,20 @@ namespace Jesta.Automation.VisionStore.Tests
         {
             testName = System.Reflection.MethodBase.GetCurrentMethod().Name;
             LoggerUtility.StartTest(testName);
-     
             Trans.SelectRecoverTransactions();
             Emp.AuthenticateEmployee(CommonData.EMP_ID, CommonData.EMP_PWD);
-          
-            Assert.True(VerifyAppStates(StateConstants.STATE_461, StateConstants.STATE_460), "Appstate Transition to State 460/461");
-            LoggerUtility.StatusPass("Verified AppState Transition Functionality");
-
-            Assert.True(Trans.NoTransactionToTransaferMessage(), "No Transactions To Transfer Message Existance");
-
+            //Validate state method 1
+            //Assert.True(VerifyAppStates(StateConstants.STATE_461, StateConstants.STATE_460), "Appstate Transition to State 460/461");
+            //LoggerUtility.StatusPass("Verified AppState Transition Functionality");
+            //Validate state method 2
             Assert.True(VerifyAppState(StateConstants.STATE_460) || VerifyAppState(StateConstants.STATE_461));
-            LoggerUtility.StatusPass("Verified AppState Transition Functionality"); 
-            
-
+            LoggerUtility.StatusPass("Verified Transaction States");
+            //Validate prompt messge method 1
+            //Assert.True(Trans.CheckRecoverTransMsgs(AppConstants.SELCT_TRANS_PROMPT,AppConstants.NO_TRANS_PROMPT));
+            //LoggerUtility.StatusPass("Verified Transaction Prompt Message");
+            //Validate prompt message method 2
             Assert.True(Trans.NoTransactionToTransaferMessage() || Trans.SelectTransactionToTransaferMessage());
-            LoggerUtility.StatusPass("Verified Recover Transactions Functionality");
+            ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);
         }
 
         [Test]
