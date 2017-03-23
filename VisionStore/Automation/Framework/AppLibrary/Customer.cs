@@ -104,7 +104,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
             {
                 Console.WriteLine("Searching thre customer with Name: " + sCustomer);
                 SearchCustomers(sCustomer);
-                Thread.Sleep(1000);
+                //Thread.Sleep(1000);
                 wCustomerWin.WaitWhileBusy();
                 ClickOnButton(wCustomerWin, "fBtnSetAsCustomer");
                 Thread.Sleep(CommonData.iLoadingTime);

@@ -109,7 +109,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         {
             EnterEmployeeNumber(sEmpNmbr);
             EnterEmployeePasscode(sPasscode);
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
             Console.WriteLine("<Info> The user authentication for the Emp: " + sEmpNmbr);
             wVStoreMainWindow.WaitWhileBusy();
             LoggerUtility.StatusInfo("Authenticated The Employee With The # "+ sEmpNmbr); 
