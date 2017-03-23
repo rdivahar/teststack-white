@@ -379,7 +379,7 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
 
             if (VerifyAppStateAndLabel(StateConstants.STATE_7000, AppConstants.PAYMENT_MODE_PROMPT))
             {
-                PressSpecialKey(KeyboardInput.SpecialKeys.F3);
+                PressSpecialKey(KeyboardInput.SpecialKeys.F4);
                 VerifyAppStateAndLabel(StateConstants.STATE_7040, AppConstants.ENTER_TENDER_AMT_PROMPT);
 
                 PressEnter(wVStoreMainWindow);
