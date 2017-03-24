@@ -21,7 +21,7 @@ namespace Jesta.VStore.Automation.Framework.ObjectRepository
         public static string BTN_PANEL_NEXT = "btnNext";
         public static string BTN_RESUME = "btn4";
         public static string BTN_APPLY = "fbtnApply";
-        public static string BTN_TRANSACTION_MERGE = "btn5";
+        public static string BTN_TRANSACTION_MERGE = "btn6";
 
 
     }
