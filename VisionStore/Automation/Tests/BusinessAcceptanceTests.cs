@@ -35,16 +35,8 @@ namespace Jesta.Automation.VisionStore.Tests
             LoggerUtility.StartTest(testName);
             Trans.SelectRecoverTransactions();
             Emp.AuthenticateEmployee(CommonData.EMP_ID, CommonData.EMP_PWD);
-            //Validate state method 1
-            //Assert.True(VerifyAppStates(StateConstants.STATE_461, StateConstants.STATE_460), "Appstate Transition to State 460/461");
-            //LoggerUtility.StatusPass("Verified AppState Transition Functionality");
-            //Validate state method 2
             Assert.True(VerifyAppState(StateConstants.STATE_460) || VerifyAppState(StateConstants.STATE_461));
             LoggerUtility.StatusPass("Verified Transaction States");
-            //Validate prompt messge method 1
-            //Assert.True(Trans.CheckRecoverTransMsgs(AppConstants.SELCT_TRANS_PROMPT,AppConstants.NO_TRANS_PROMPT));
-            //LoggerUtility.StatusPass("Verified Transaction Prompt Message");
-            //Validate prompt message method 2
             Assert.True(Trans.NoTransactionToTransaferMessage() || Trans.SelectTransactionToTransaferMessage());
             ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);
         }

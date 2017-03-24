@@ -228,8 +228,6 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         {
             Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
             bool bNoTransMessage = (majorPromptLabel.NameMatches("There are no transactions to transfer."));
-            //wVStoreMainWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F1);
-            //ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);//PressSpecialKey(KeyboardInput.SpecialKeys.F1);
             wVStoreMainWindow.WaitWhileBusy();
             return bNoTransMessage;
         }
@@ -238,8 +236,6 @@ namespace Jesta.VStore.Automation.Framework.AppLibrary
         {
             Label majorPromptLabel = GetLabel(AppConstants.MAJOR_PROMPT);
             bool bSelectTransMessage = (majorPromptLabel.NameMatches("Select the terminal to transfer from."));
-            //wVStoreMainWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F1);
-            //ClickOnButton(wVStoreMainWindow, ButtonConstants.BTN_CANCEL);//PressSpecialKey(KeyboardInput.SpecialKeys.F1);
             wVStoreMainWindow.WaitWhileBusy();
             return bSelectTransMessage;
         }

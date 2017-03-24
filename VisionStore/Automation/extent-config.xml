@@ -15,7 +15,7 @@
     <!-- report name - displayed at top-nav -->
     <reportName>VisionStore Test Report</reportName>
     <!-- report headline - displayed at top-nav, after reportHeadline -->
-    <reportHeadline>--BATS</reportHeadline>
+    <reportHeadline>--VISIONSTOREREPORT</reportHeadline>
     <!-- global date format override -->
     <!-- defaults to yyyy-MM-dd -->
     <dateFormat>yyyy-MM-dd</dateFormat>
